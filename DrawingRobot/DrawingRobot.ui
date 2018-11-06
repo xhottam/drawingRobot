@@ -2,6 +2,9 @@
 <ui version="4.0">
  <class>DrawingRobotClass</class>
  <widget class="QMainWindow" name="DrawingRobotClass">
+  <property name="windowModality">
+   <enum>Qt::ApplicationModal</enum>
+  </property>
   <property name="geometry">
    <rect>
     <x>0</x>
@@ -29,9 +32,9 @@
    <widget class="QTreeView" name="treeView">
     <property name="geometry">
      <rect>
-      <x>30</x>
-      <y>50</y>
-      <width>141</width>
+      <x>20</x>
+      <y>220</y>
+      <width>121</width>
       <height>431</height>
      </rect>
     </property>
@@ -39,9 +42,9 @@
    <widget class="QListWidget" name="listWidget">
     <property name="geometry">
      <rect>
-      <x>180</x>
-      <y>50</y>
-      <width>171</width>
+      <x>160</x>
+      <y>220</y>
+      <width>111</width>
       <height>431</height>
      </rect>
     </property>
@@ -49,9 +52,9 @@
    <widget class="QListWidget" name="listWidget_2">
     <property name="geometry">
      <rect>
-      <x>360</x>
-      <y>50</y>
-      <width>201</width>
+      <x>280</x>
+      <y>220</y>
+      <width>131</width>
       <height>431</height>
      </rect>
     </property>
@@ -66,13 +69,23 @@
      </rect>
     </property>
    </widget>
-   <widget class="QOpenGLWidget" name="openGLWidget">
+   <widget class="OGLWidget" name="openGLWidget">
     <property name="geometry">
      <rect>
       <x>570</x>
       <y>330</y>
       <width>325</width>
       <height>325</height>
+     </rect>
+    </property>
+   </widget>
+   <widget class="QListWidget" name="listWidget_3">
+    <property name="geometry">
+     <rect>
+      <x>420</x>
+      <y>220</y>
+      <width>141</width>
+      <height>431</height>
      </rect>
     </property>
    </widget>
@@ -95,7 +108,14 @@
     <addaction name="actionExit"/>
     <addaction name="separator"/>
    </widget>
+   <widget class="QMenu" name="menuDynamixel">
+    <property name="title">
+     <string>Dynamixel</string>
+    </property>
+    <addaction name="dynamixelOpen"/>
+   </widget>
    <addaction name="menuOpen"/>
+   <addaction name="menuDynamixel"/>
   </widget>
   <widget class="QToolBar" name="mainToolBar">
    <attribute name="toolBarArea">
@@ -116,8 +136,20 @@
     <string>Exit</string>
    </property>
   </action>
+  <action name="dynamixelOpen">
+   <property name="text">
+    <string>Open</string>
+   </property>
+  </action>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
+ <customwidgets>
+  <customwidget>
+   <class>OGLWidget</class>
+   <extends>QOpenGLWidget</extends>
+   <header location="global">oglwidget.h</header>
+  </customwidget>
+ </customwidgets>
  <resources>
   <include location="DrawingRobot.qrc"/>
  </resources>

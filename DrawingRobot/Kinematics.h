@@ -13,7 +13,7 @@ const float LongBrazo = 107;
 const float LongAntBr = 195;
 
 struct degrees {
-	float shoulder, elbow;
+	float shoulder_bio_degree, elbow_bio_degree,shoulder_angle, elbow_angle;
 };
 
 //static std::ofstream fs("k.txt");

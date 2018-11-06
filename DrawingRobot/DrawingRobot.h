@@ -3,8 +3,12 @@
 #include <QtWidgets/QMainWindow>
 #include <QFileDialog>
 #include "ui_DrawingRobot.h"
+#include "QT_Dynamixel.h"
 #include <complex>
+#include "SerialPort.h"
+#include "Dynamixel.h"
 
+static SerialPort *_serial;
 
 class DrawingRobot : public QMainWindow
 {
@@ -12,11 +16,13 @@ class DrawingRobot : public QMainWindow
 
 public:
 	DrawingRobot(QWidget *parent = Q_NULLPTR);
+	
+	
 
 private:
 	Ui::DrawingRobotClass ui;
 	QGraphicsScene  *scene = new QGraphicsScene();
-	
+
 	QAction *paint = new QAction();
 	QAction *simulate = new QAction();
 	QAction *run = new QAction();
@@ -24,7 +30,7 @@ private:
 	QAction *paintAll = new QAction();
 	QAction *simulateAll = new QAction();
 	QAction *runAll = new QAction();
-	
+
 	void showBeizer(int index, int row);
 	void paintBeizer(int index, int row);
 	void paintBeizer(int index);
@@ -32,9 +38,11 @@ private:
 	void setScene();
 	void addSceneEllipse(qreal x, qreal y);
 
+	
 public slots:
 	void on_fileOpen_clicked();
 	void on_actionExit_clicked();
+	void on_dynamixelOpen_clicked();
 	void action_Paint_clicked();
 	void action_Simulate_clicked();
 	void action_Run_clicked();
@@ -43,4 +51,5 @@ public slots:
 	void action_RunALL_clicked();
 	void on_treeView_clicked();
 	void onCustomContextMenu(const QPoint &);
+	void onDynamixelReady(bool, SerialPort &);
 };

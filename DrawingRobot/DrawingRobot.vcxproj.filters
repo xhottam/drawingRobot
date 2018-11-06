@@ -39,17 +39,35 @@
     <ClCompile Include="Kinematics.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="oglwidget.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
     <ClCompile Include="GeneratedFiles\qrc_DrawingRobot.cpp">
       <Filter>Generated Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Qt_Dynamixel.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="SerialPort.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Dynamixel.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <QtMoc Include="DrawingRobot.h">
       <Filter>Header Files</Filter>
     </QtMoc>
+    <QtMoc Include="Qt_Dynamixel.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
   </ItemGroup>
   <ItemGroup>
     <QtUic Include="DrawingRobot.ui">
+      <Filter>Form Files</Filter>
+    </QtUic>
+    <QtUic Include="Qt_Dynamixel.ui">
       <Filter>Form Files</Filter>
     </QtUic>
   </ItemGroup>
@@ -68,8 +86,17 @@
     <ClInclude Include="Kinematics.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="oglwidget.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
     <ClInclude Include="GeneratedFiles\ui_DrawingRobot.h">
       <Filter>Generated Files</Filter>
+    </ClInclude>
+    <ClInclude Include="SerialPort.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Dynamixel.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

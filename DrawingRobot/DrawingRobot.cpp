@@ -1,13 +1,16 @@
 #include "DrawingRobot.h"
 #include "QStandardItemModel"
 #include "svg.h"
+#include "oglwidget.h"
+
+
 
 DrawingRobot::DrawingRobot(QWidget *parent)
 	: QMainWindow(parent)
 {
 	ui.setupUi(this);
 
-	ui.graphicsView->scale(0.5, -0.5);
+	ui.graphicsView->scale(0.5, -0.5);	
 	
 	paint->setText(QString("Paint"));
 	connect(paint, SIGNAL(triggered()), this, SLOT(action_Paint_clicked()));
@@ -23,14 +26,16 @@ DrawingRobot::DrawingRobot(QWidget *parent)
 	runAll->setText(QString("RunALL"));
 	connect(runAll, SIGNAL(triggered()), this, SLOT(action_RunALL_clicked()));
 	
-	ui.treeView->hide();
+	//ui.treeView->hide();
 	ui.treeView->setContextMenuPolicy(Qt::CustomContextMenu);
 
-	ui.listWidget->hide();
-	ui.listWidget_2->hide();
+	//ui.listWidget->hide();
+	//ui.listWidget_2->hide();
+	//ui.listWidget_3->hide();
 
 	connect(ui.fileOpen, SIGNAL(triggered()),this, SLOT(on_fileOpen_clicked()));
 	connect(ui.actionExit, SIGNAL(triggered()), this, SLOT(on_actionExit_clicked()));
+	connect(ui.dynamixelOpen, SIGNAL(triggered()), this, SLOT(on_dynamixelOpen_clicked()));
 
 	//connect(ui.treeView, SIGNAL(clicked(QModelIndex)), SLOT(on_treeView_clicked()));
 	connect(ui.treeView, SIGNAL(customContextMenuRequested(const QPoint &)), this, SLOT(onCustomContextMenu(const QPoint &)));
@@ -60,6 +65,7 @@ void DrawingRobot::onCustomContextMenu(const QPoint &point) {
 	menu->addAction(simulateAll);
 	menu->addAction(run);	
 	menu->addAction(runAll);
+	
 
 
 	if (index.row() == -1 && index.column() == -1) {
@@ -83,10 +89,22 @@ void DrawingRobot::onCustomContextMenu(const QPoint &point) {
 	menu->exec(QCursor::pos());
 }
 
+void DrawingRobot::onDynamixelReady(bool connected, SerialPort &serial)
+{
+	if (connected) {
+		_serial = &serial;
+		int moving = dynamixel.dxl_read_byte(_serial, 1, Dynamixel::AXM_MOVING);
+		
+	}
+	
+}
+
 void DrawingRobot::showBeizer(int index, int row)
 {
 	ui.listWidget->clear();
 	ui.listWidget_2->clear();
+	ui.listWidget_3->clear();
+	
 
 	auto it = svg::_paths.paths.begin();
 	std::advance(it, index);
@@ -96,19 +114,27 @@ void DrawingRobot::showBeizer(int index, int row)
 
 	for (auto __it = _it._Ptr->_Myval.coordinates.begin(); __it != _it._Ptr->_Myval.coordinates.end(); __it++) {
 		for (auto ___it = __it._Ptr->_Myval.coordinate.begin(); ___it != __it._Ptr->_Myval.coordinate.end(); ___it++) {
-			QListWidgetItem *child = new QListWidgetItem(QString("x=%1 y=%2").arg(___it._Ptr->_Myval.x).arg(___it._Ptr->_Myval.y));
+			QListWidgetItem *child = new QListWidgetItem(QString("%1|%2").arg(___it._Ptr->_Myval.x).arg(___it._Ptr->_Myval.y));
 			ui.listWidget->addItem(child);
 		}
 	}
 	for (auto __it = _it._Ptr->_Myval.degrees.begin(); __it != _it._Ptr->_Myval.degrees.end(); __it++) {
 		for (auto ___it = __it._Ptr->_Myval.coordinate.begin(); ___it != __it._Ptr->_Myval.coordinate.end(); ___it++) {
-			QListWidgetItem *child = new QListWidgetItem(QString("shoulder=%1 elbow=%2").arg(___it._Ptr->_Myval.x).arg(___it._Ptr->_Myval.y));
+			QListWidgetItem *child = new QListWidgetItem(QString("%1|%2").arg(___it._Ptr->_Myval.x).arg(___it._Ptr->_Myval.y));
 			ui.listWidget_2->addItem(child);
 		}
 	}
 
-	ui.listWidget->show();
-	ui.listWidget_2->show();
+	for (auto __it = _it._Ptr->_Myval.angles.begin(); __it != _it._Ptr->_Myval.angles.end(); __it++) {
+		for (auto ___it = __it._Ptr->_Myval.coordinate.begin(); ___it != __it._Ptr->_Myval.coordinate.end(); ___it++) {
+			QListWidgetItem *child = new QListWidgetItem(QString("%1|%2").arg(___it._Ptr->_Myval.x).arg(___it._Ptr->_Myval.y));
+			ui.listWidget_3->addItem(child);
+		}
+	}
+
+	//ui.listWidget->show();
+	//ui.listWidget_2->show();
+	//ui.listWidget_3->show();
 
 
 }
@@ -132,9 +158,36 @@ void DrawingRobot::action_Simulate_clicked()
 	QModelIndex index = ui.treeView->currentIndex();
 	if (index.parent().isValid()) {
 		TRACE(<< "path : index " << index.parent().row() << " child:row " << index.row() << " child:column " << index.column() << std::endl);
+		
+		auto it = svg::_paths.paths.begin();
+		std::advance(it, index.parent().row());
+
+		auto _it = (it._Ptr->_Myval._beizer.begin());
+		std::advance(_it, index.row());
+
+		for (auto __it = _it._Ptr->_Myval.angles.begin(); __it != _it._Ptr->_Myval.angles.end(); __it++) {
+			for (auto ___it = __it._Ptr->_Myval.coordinate.begin(); ___it != __it._Ptr->_Myval.coordinate.end(); ___it++) {
+				ui.openGLWidget->setViewAngles(___it._Ptr->_Myval.x, ___it._Ptr->_Myval.y);
+			}
+		}
+
+		
 	}
 	else {
 		TRACE(<< "path : index " << index.row() << std::endl);
+		
+		auto it = svg::_paths.paths.begin();
+		std::advance(it, index.row());
+	
+		for (auto _it = it._Ptr->_Myval._beizer.begin(); _it != it._Ptr->_Myval._beizer.end(); _it++) {
+			for (auto __it = _it._Ptr->_Myval.angles.begin(); __it != _it._Ptr->_Myval.angles.end(); __it++) {
+				for (auto ___it = __it._Ptr->_Myval.coordinate.begin(); ___it != __it._Ptr->_Myval.coordinate.end(); ___it++) {
+					//DrawingRobot::addSceneEllipse(___it._Ptr->_Myval.x, ___it._Ptr->_Myval.y);
+					ui.openGLWidget->setViewAngles(___it._Ptr->_Myval.x, ___it._Ptr->_Myval.y);
+					Sleep(5);
+				}
+			}
+		}
 	}
 }
 void DrawingRobot::paintBeizer(int index, int row)
@@ -146,10 +199,7 @@ void DrawingRobot::paintBeizer(int index, int row)
 
 	auto _it = (it._Ptr->_Myval._beizer.begin());
 	std::advance(_it, row);
-
-	QPainterPath m_pathTrack;
-	QPolygon m_qpolygon;
-
+	
 	for (auto __it = _it._Ptr->_Myval.coordinates.begin(); __it != _it._Ptr->_Myval.coordinates.end(); __it++) {
 		for (auto ___it = __it._Ptr->_Myval.coordinate.begin(); ___it != __it._Ptr->_Myval.coordinate.end(); ___it++) {
 			DrawingRobot::addSceneEllipse(___it._Ptr->_Myval.x, ___it._Ptr->_Myval.y);			
@@ -183,7 +233,8 @@ void DrawingRobot::action_PaintALL_clicked()
 		for (auto __it = _it._Ptr->_Myval._beizer.begin(); __it != _it._Ptr->_Myval._beizer.end(); __it++) {
 			for (auto ___it = __it._Ptr->_Myval.coordinates.begin(); ___it != __it._Ptr->_Myval.coordinates.end(); ___it++) {
 				for (auto ____it = ___it._Ptr->_Myval.coordinate.begin(); ____it != ___it._Ptr->_Myval.coordinate.end(); ____it++) {
-					DrawingRobot::addSceneEllipse(____it._Ptr->_Myval.x, ____it._Ptr->_Myval.y);					
+					//OGLWidget::setViewAngles(____it._Ptr->_Myval.x, ____it._Ptr->_Myval.y);
+					
 				}
 			}	
 		}		
@@ -232,6 +283,15 @@ void DrawingRobot::on_actionExit_clicked() {
 	this->close();
 }
 
+
+void DrawingRobot::on_dynamixelOpen_clicked() {
+	Qt_Dynamixel qtDynamixel(this);
+	//Qt_Dynamixel *qtDynamixel = new Qt_Dynamixel();
+	connect(&qtDynamixel,SIGNAL(onDynamixelReady_signal(bool,SerialPort & )), this,SLOT(onDynamixelReady(bool, SerialPort &)));
+	qtDynamixel.exec();
+	
+}
+
 void DrawingRobot::on_fileOpen_clicked() {
 
 	
@@ -242,10 +302,11 @@ void DrawingRobot::on_fileOpen_clicked() {
 		auto dom = svgdom::load(papki::FSFile(fileName.toStdString()));		
 		ASSERT_ALWAYS(dom);
 		ASSERT_ALWAYS(dom->children.size() != 0);
-		//reseteo todos los paths siempre que se intente abrir un fichero
+		//reseteo todos los paths  que se intente abrir un fichero
 		svg::_paths.paths.clear();
 		ui.listWidget->clear();
 		ui.listWidget_2->clear();
+		ui.listWidget_3->clear();
 		ui.treeView->setModel(nullptr);
 
 		dom->accept(svg::visitor);
@@ -276,7 +337,7 @@ void DrawingRobot::on_fileOpen_clicked() {
 		}
 		model->setHeaderData(0, Qt::Horizontal, "Paths");
 		ui.treeView->setModel(model);
-		ui.treeView->show();
+		//ui.treeView->show();
 	}
 	
 }

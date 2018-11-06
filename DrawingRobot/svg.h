@@ -26,12 +26,13 @@ namespace svg {
 	//lista de coordenadas
 	struct coordinates {
 		std::list<svg::coordinate> coordinate;
-	}_coordinates;
+	}_coordinates; 
 
 	//coordenadas beizerCubic and kinematics degrees.
 	struct beizer {
 		std::list<svg::coordinates> coordinates;
 		std::list<svg::coordinates> degrees;
+		std::list<svg::coordinates> angles;
 	};
 	//lista de coordenadas por tipo
 	struct path {
@@ -81,6 +82,8 @@ namespace svg {
 			
 			svg::coordinates _coordinates;
 			svg::coordinates _degrees;
+			svg::coordinates _angles;
+			
 			svg::beizer _beizer;
 
 			float x, y;
@@ -90,14 +93,17 @@ namespace svg {
 				x = _bezierCubic(P1.x, P2.x, P3.x, P4.x, i);
 				y = _bezierCubic(P1.y, P2.y, P3.y, P4.y, i);
 				//OJO MODIFICAMOS x=y y=x
-				degrees _degree = calculaCinematica2dof(Eigen::Vector2f(y,x));
-				_degrees.coordinate.push_back(_coordinate = { (svgdom::real)_degree.shoulder, (svgdom::real)_degree.elbow});
-				_coordinates.coordinate.push_back(_coordinate = { (svgdom::real)x, (svgdom::real)y });	
+				degrees _degree = calculaCinematica2dof(Eigen::Vector2f(x,y));
+				_degrees.coordinate.push_back(_coordinate = { (svgdom::real)_degree.shoulder_bio_degree, (svgdom::real)_degree.elbow_bio_degree});
+				_angles.coordinate.push_back(_coordinate = { (svgdom::real)_degree.shoulder_angle, (svgdom::real)_degree.elbow_angle });
+				_coordinates.coordinate.push_back(_coordinate = { (svgdom::real)x, (svgdom::real)y });
+				
 
 			}
 			
 			_beizer.coordinates.push_back(_coordinates);
 			_beizer.degrees.push_back(_degrees);
+			_beizer.angles.push_back(_angles);
 			return _beizer;
 		}
 
@@ -126,15 +132,22 @@ namespace svg {
 				
 				svg::coordinates _beizer_coordinates;
 				svg::coordinates _beizer_degrees;
+				svg::coordinates _beizer_angles;
+
 				svg::beizer _beizer;
 
 				//OJO MODIFICAMOS x=y y=x
-				//degrees _degree = calculaCinematica2dof(Eigen::Vector2f(it._Ptr->x, abs(OFFSET_Y - it._Ptr->y)));
-				degrees _degree = calculaCinematica2dof(Eigen::Vector2f( abs(OFFSET_Y - it._Ptr->y), it._Ptr->x + OFFSET_X));
-				_beizer_degrees.coordinate.push_back(_coordinate = { (svgdom::real)_degree.shoulder, (svgdom::real)_degree.elbow });
+				degrees _degree = calculaCinematica2dof(Eigen::Vector2f(it._Ptr->x + OFFSET_X, abs(OFFSET_Y - it._Ptr->y)));
+				//degrees _degree = calculaCinematica2dof(Eigen::Vector2f( abs(OFFSET_Y - it._Ptr->y), it._Ptr->x + OFFSET_X));
+				
+				_beizer_degrees.coordinate.push_back(_coordinate = { (svgdom::real)_degree.shoulder_bio_degree, (svgdom::real)_degree.elbow_bio_degree });
+				_beizer_angles.coordinate.push_back(_coordinate = { (svgdom::real)_degree.shoulder_angle, (svgdom::real)_degree.elbow_angle });
 				_beizer_coordinates.coordinate.push_back(_coordinate = { it._Ptr->x + OFFSET_X , abs(OFFSET_Y - it._Ptr->y) });
+				
 				_beizer.coordinates.push_back(_beizer_coordinates);
 				_beizer.degrees.push_back(_beizer_degrees);
+				_beizer.angles.push_back(_beizer_angles);
+				
 				_path._beizer.push_back(_beizer);
 								
 				_coordinates.coordinate.clear();

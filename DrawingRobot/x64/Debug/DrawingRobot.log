@@ -1,1 +1,21 @@
-﻿
+﻿  Moc'ing DrawingRobot.h...
+  Moc'ing Qt_Dynamixel.h...
+  Rcc'ing DrawingRobot.qrc...
+  Uic'ing DrawingRobot.ui...
+  RCC: Warning: No resources in 'C:\source\repos\DrawingRobot\DrawingRobot\DrawingRobot.qrc'.
+  Uic'ing Qt_Dynamixel.ui...
+  C:\source\repos\DrawingRobot\DrawingRobot\Qt_Dynamixel.h(21): Warning: Function declaration Qt_Dynamixel::availablePorts contains extra qualification. Ignoring as signal or slot.
+C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\Common7\IDE\VC\VCTargets\Microsoft.CppBuild.targets(944,5): warning MSB8027: Two or more files with the name of qrc_DrawingRobot.cpp will produce outputs to the same location. This can lead to an incorrect build result.  The files involved are GeneratedFiles\qrc_DrawingRobot.cpp, .\GeneratedFiles\qrc_DrawingRobot.cpp.
+  DrawingRobot.cpp
+  Dynamixel.cpp
+  Kinematics.cpp
+  main.cpp
+  oglwidget.cpp
+c:\source\repos\drawingrobot\drawingrobot\kinematics.cpp(38): warning C4700: uninitialized local variable 'shoulder_pivot_angle' used
+  Qt_Dynamixel.cpp
+  SerialPort.cpp
+  moc_DrawingRobot.cpp
+  moc_Qt_Dynamixel.cpp
+  qrc_DrawingRobot.cpp
+x64\Debug\qrc_DrawingRobot.obj : warning LNK4042: object specified more than once; extras ignored
+  DrawingRobot.vcxproj -> C:\source\repos\DrawingRobot\x64\Debug\DrawingRobot.exe
