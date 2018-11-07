@@ -45,7 +45,52 @@ class Dynamixel {
 	public:
 		Dynamixel();
 		~Dynamixel();
-
+		struct eeprom {
+			int MODEL_NUMBER;
+			int FIRMWARE_VERSION;
+			int ID;
+			int BAUD_RATE;
+			int RETURN_DELAY_TIME;
+			int CW_ANGLE_LIMIT;
+			int CCW_ANGLE_LIMIT;
+			int SYSTEM_DATA2;
+			int HIGHEST_LIMIT_TEMPERATURE;
+			int LOWEST_LIMIT_VOLTAGE;
+			int HIGHEST_LIMIT_VOLTAGE;
+			int MAX_TORQUE;
+			int STATUS_RETURN_LEVEL;
+			int ALARM_LED;
+			int ALARM_SHUTDOWN;
+			int OPERATING_MODE;
+			int DOWN_CALIBRATION;
+			int UP_CALIBRATION;
+		};
+		struct ram {
+			int TORQUE_ENABLE;
+			int LED;
+			int CW_COMPLIANCE_MARGIN;
+			int CCW_COMPLIANCE_MARGIN;
+			int CW_COMPLIANCE_SLOPE;
+			int CCW_COMPLIANCE_SLOPE;
+			int GOAL_POSITION;
+			int MOVING_SPEED;
+			int TORQUE_LIMIT;
+			int PRESENT_POSITION;
+			int PRESENT_SPEED;
+			int PRESENT_LOAD;
+			int PRESENT_VOLTAGE;
+			int PRESENT_TEMPERATURE;
+			int REGISTERED_INSTRUCTION;
+			int PAUSE_TIME;
+			int MOVING;
+			int LOCK;
+			int PUNCH;
+		};
+		struct ControlTable {
+			eeprom eeprom;
+			ram ram;			
+		}_controlTable;
+		
 		// Universal address table
 		#define P_MODEL_NUMBER_L                0
 		#define P_MODEL_NUMBER_H                1
@@ -58,6 +103,7 @@ class Dynamixel {
 		//#define P_REGISTERED_INSTRUCTION        44
 
 		#define DEFAULT_RETURN_PACKET_SIZE 6
+		#define DEFAULT_OFFSET_STATUS_PACKET 5
 
 		// AX-12+/18F address table
 		enum {
@@ -274,8 +320,9 @@ class Dynamixel {
 		void dxl_write_byte(SerialPort *serialPort,int id, int address, int value);
 		int dxl_read_word(SerialPort *serialPort,int id, int address);
 		void dxl_write_word(SerialPort *serialPort,int id, int address, int value);
-		void readControlTable(SerialPort *serialPort, int id);
+		ControlTable readControlTable(SerialPort *serialPort, int id);
 		void moveDrawingArm(SerialPort *serialPort,int hombro,int codo);
+		bool isMoving(SerialPort *serialPort, int id);
 			
 			
 };

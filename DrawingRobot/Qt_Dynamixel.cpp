@@ -26,6 +26,12 @@ bool Qt_Dynamixel::availablePorts() {
 	bool _result = false;
 	if (serial._connect == true) {
 		_result = serial._connect;
+		//dynamixel.readControlTable(&serial, 1);
+		//dynamixel.dxl_write_word(&serial, 1, Dynamixel::AXM_GOAL_POSITION_L, 512);
+		//dynamixel.dxl_write_word(&serial, 2, Dynamixel::AXM_GOAL_POSITION_L, 512);
+		//while (dynamixel.dxl_read_byte(&serial, 1, Dynamixel::AXM_MOVING) || dynamixel.dxl_read_byte(&serial, 2, Dynamixel::AXM_MOVING)) {}
+		//dynamixel.moveDrawingArm(&serial, 1023, 1023);
+		//dynamixel.dxl_write_word(&serial, 1, Dynamixel::AXM_GOAL_POSITION_L,10);
 		return _result;
 	}
 

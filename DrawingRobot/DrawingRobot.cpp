@@ -91,10 +91,11 @@ void DrawingRobot::onCustomContextMenu(const QPoint &point) {
 
 void DrawingRobot::onDynamixelReady(bool connected, SerialPort &serial)
 {
+	//_serial = new SerialPort();
 	if (connected) {
 		_serial = &serial;
-		int moving = dynamixel.dxl_read_byte(_serial, 1, Dynamixel::AXM_MOVING);
-		
+		//int moving = dynamixel.dxl_read_byte(_serial, 1, Dynamixel::AXM_MOVING);
+		//dynamixel.readControlTable(_serial, 1);		
 	}
 	
 }
@@ -222,6 +223,7 @@ void DrawingRobot::paintBeizer(int index)
 			}			
 		}
 	}
+
 }
 
 void DrawingRobot::action_PaintALL_clicked()
@@ -234,7 +236,7 @@ void DrawingRobot::action_PaintALL_clicked()
 			for (auto ___it = __it._Ptr->_Myval.coordinates.begin(); ___it != __it._Ptr->_Myval.coordinates.end(); ___it++) {
 				for (auto ____it = ___it._Ptr->_Myval.coordinate.begin(); ____it != ___it._Ptr->_Myval.coordinate.end(); ____it++) {
 					//OGLWidget::setViewAngles(____it._Ptr->_Myval.x, ____it._Ptr->_Myval.y);
-					
+					DrawingRobot::addSceneEllipse(____it._Ptr->_Myval.x, ____it._Ptr->_Myval.y);
 				}
 			}	
 		}		
