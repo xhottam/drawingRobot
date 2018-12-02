@@ -9,39 +9,35 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>903</width>
+    <width>915</width>
     <height>710</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>Qt_Dynamixel</string>
   </property>
-  <widget class="QPushButton" name="pushButton">
+  <widget class="QGroupBox" name="elbow">
    <property name="geometry">
     <rect>
-     <x>100</x>
-     <y>10</y>
-     <width>75</width>
-     <height>23</height>
-    </rect>
-   </property>
-   <property name="text">
-    <string>PushButton</string>
-   </property>
-  </widget>
-  <widget class="QGroupBox" name="groupBox">
-   <property name="geometry">
-    <rect>
-     <x>630</x>
+     <x>320</x>
      <y>0</y>
      <width>271</width>
      <height>691</height>
     </rect>
    </property>
+   <property name="styleSheet">
+    <string notr="true"> QGroupBox {
+ background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
+                                   stop: 0 #E0E0E0, stop: 1 #FFFFFF);
+ border: 2px solid gray;
+ border-radius: 5px;
+ margin-top: 1ex; /* leave space at the top for the title */
+}</string>
+   </property>
    <property name="title">
     <string>ELBOW</string>
    </property>
-   <widget class="QGroupBox" name="groupBox_2">
+   <widget class="QGroupBox" name="elbow_eeprom">
     <property name="geometry">
      <rect>
       <x>10</x>
@@ -58,7 +54,7 @@
       <rect>
        <x>10</x>
        <y>20</y>
-       <width>151</width>
+       <width>137</width>
        <height>291</height>
       </rect>
      </property>
@@ -182,6 +178,12 @@
       </item>
       <item row="1" column="1">
        <widget class="QDoubleSpinBox" name="elbow_firmware">
+        <property name="readOnly">
+         <bool>true</bool>
+        </property>
+        <property name="buttonSymbols">
+         <enum>QAbstractSpinBox::NoButtons</enum>
+        </property>
         <property name="decimals">
          <number>0</number>
         </property>
@@ -189,6 +191,12 @@
       </item>
       <item row="0" column="1">
        <widget class="QDoubleSpinBox" name="elbow_modelNumber">
+        <property name="readOnly">
+         <bool>true</bool>
+        </property>
+        <property name="buttonSymbols">
+         <enum>QAbstractSpinBox::NoButtons</enum>
+        </property>
         <property name="decimals">
          <number>0</number>
         </property>
@@ -388,6 +396,9 @@
       </item>
       <item row="2" column="1">
        <widget class="QDoubleSpinBox" name="elbow_id">
+        <property name="buttonSymbols">
+         <enum>QAbstractSpinBox::NoButtons</enum>
+        </property>
         <property name="decimals">
          <number>0</number>
         </property>
@@ -453,190 +464,228 @@
     <widget class="QWidget" name="gridLayoutWidget_2">
      <property name="geometry">
       <rect>
-       <x>170</x>
-       <y>20</y>
-       <width>71</width>
-       <height>291</height>
+       <x>160</x>
+       <y>80</y>
+       <width>81</width>
+       <height>231</height>
       </rect>
      </property>
      <layout class="QGridLayout" name="gridLayout_3">
-      <item row="4" column="0">
-       <widget class="QPushButton" name="elbow_returnDelay_read">
-        <property name="text">
-         <string>R</string>
-        </property>
-       </widget>
-      </item>
-      <item row="12" column="1">
-       <widget class="QPushButton" name="elbow_alarmLed_write">
-        <property name="text">
-         <string>W</string>
-        </property>
-       </widget>
-      </item>
       <item row="9" column="0">
-       <widget class="QPushButton" name="elbow_lLimiitVoltage_read">
-        <property name="text">
-         <string>R</string>
-        </property>
-       </widget>
-      </item>
-      <item row="10" column="1">
-       <widget class="QPushButton" name="elbow_maxTorque_write">
-        <property name="text">
-         <string>W</string>
-        </property>
-       </widget>
-      </item>
-      <item row="7" column="0">
-       <widget class="QPushButton" name="elbow_hLimitTemp_read">
-        <property name="text">
-         <string>R</string>
-        </property>
-       </widget>
-      </item>
-      <item row="11" column="1">
-       <widget class="QPushButton" name="elbow_statusReturn_write">
-        <property name="text">
-         <string>W</string>
-        </property>
-       </widget>
-      </item>
-      <item row="12" column="0">
        <widget class="QPushButton" name="elbow_alarmLed_read">
+        <property name="enabled">
+         <bool>false</bool>
+        </property>
         <property name="text">
          <string>R</string>
         </property>
        </widget>
       </item>
-      <item row="10" column="0">
-       <widget class="QPushButton" name="elbow_maxTorque_read">
+      <item row="2" column="1">
+       <widget class="QPushButton" name="elbow_cw_write">
+        <property name="enabled">
+         <bool>false</bool>
+        </property>
         <property name="text">
-         <string>R</string>
+         <string>W</string>
         </property>
        </widget>
       </item>
-      <item row="11" column="0">
-       <widget class="QPushButton" name="elbow_statusReturn_read">
+      <item row="7" column="1">
+       <widget class="QPushButton" name="elbow_maxTorque_write">
+        <property name="enabled">
+         <bool>false</bool>
+        </property>
+        <property name="text">
+         <string>W</string>
+        </property>
+       </widget>
+      </item>
+      <item row="5" column="0">
+       <widget class="QPushButton" name="elbow_hLimitVoltage_read">
+        <property name="enabled">
+         <bool>false</bool>
+        </property>
         <property name="text">
          <string>R</string>
         </property>
        </widget>
       </item>
       <item row="6" column="0">
-       <widget class="QPushButton" name="elbow_ccw_read">
+       <widget class="QPushButton" name="elbow_lLimiitVoltage_read">
+        <property name="enabled">
+         <bool>false</bool>
+        </property>
         <property name="text">
          <string>R</string>
         </property>
        </widget>
       </item>
+      <item row="5" column="1">
+       <widget class="QPushButton" name="elbow_hLimitVoltage_write">
+        <property name="enabled">
+         <bool>false</bool>
+        </property>
+        <property name="text">
+         <string>W</string>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="1">
+       <widget class="QPushButton" name="elbow_returnDelay_write">
+        <property name="enabled">
+         <bool>false</bool>
+        </property>
+        <property name="text">
+         <string>W</string>
+        </property>
+       </widget>
+      </item>
+      <item row="10" column="1">
+       <widget class="QPushButton" name="elbow_alarmShutdown_write">
+        <property name="enabled">
+         <bool>false</bool>
+        </property>
+        <property name="text">
+         <string>W</string>
+        </property>
+       </widget>
+      </item>
       <item row="8" column="0">
-       <widget class="QPushButton" name="elbow_hLimitVoltage_read">
+       <widget class="QPushButton" name="elbow_statusReturn_read">
+        <property name="enabled">
+         <bool>false</bool>
+        </property>
+        <property name="text">
+         <string>R</string>
+        </property>
+       </widget>
+      </item>
+      <item row="3" column="1">
+       <widget class="QPushButton" name="elbow_ccw_write">
+        <property name="enabled">
+         <bool>false</bool>
+        </property>
+        <property name="text">
+         <string>W</string>
+        </property>
+       </widget>
+      </item>
+      <item row="10" column="0">
+       <widget class="QPushButton" name="elbow_alarmShutdown_read">
+        <property name="enabled">
+         <bool>false</bool>
+        </property>
+        <property name="text">
+         <string>R</string>
+        </property>
+       </widget>
+      </item>
+      <item row="7" column="0">
+       <widget class="QPushButton" name="elbow_maxTorque_read">
+        <property name="enabled">
+         <bool>false</bool>
+        </property>
         <property name="text">
          <string>R</string>
         </property>
        </widget>
       </item>
       <item row="9" column="1">
-       <widget class="QPushButton" name="elbow_lLimitVoltage_write">
+       <widget class="QPushButton" name="elbow_alarmLed_write">
+        <property name="enabled">
+         <bool>false</bool>
+        </property>
         <property name="text">
          <string>W</string>
         </property>
        </widget>
       </item>
       <item row="8" column="1">
-       <widget class="QPushButton" name="elbow_hLimitVoltage_write">
+       <widget class="QPushButton" name="elbow_statusReturn_write">
+        <property name="enabled">
+         <bool>false</bool>
+        </property>
         <property name="text">
          <string>W</string>
         </property>
        </widget>
       </item>
-      <item row="3" column="0">
-       <widget class="QPushButton" name="elbow_baudRate_read">
+      <item row="4" column="0">
+       <widget class="QPushButton" name="elbow_hLimitTemp_read">
+        <property name="enabled">
+         <bool>false</bool>
+        </property>
+        <property name="text">
+         <string>R</string>
+        </property>
+       </widget>
+      </item>
+      <item row="4" column="1">
+       <widget class="QPushButton" name="elbow_hLimitTemp_write">
+        <property name="enabled">
+         <bool>false</bool>
+        </property>
+        <property name="text">
+         <string>W</string>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="0">
+       <widget class="QPushButton" name="elbow_returnDelay_read">
+        <property name="enabled">
+         <bool>false</bool>
+        </property>
         <property name="text">
          <string>R</string>
         </property>
        </widget>
       </item>
       <item row="2" column="0">
-       <widget class="QPushButton" name="elbow_id_read">
-        <property name="text">
-         <string>R</string>
-        </property>
-       </widget>
-      </item>
-      <item row="1" column="0">
-       <widget class="QPushButton" name="elbow_firmware_read">
-        <property name="text">
-         <string>R</string>
-        </property>
-       </widget>
-      </item>
-      <item row="0" column="0">
-       <widget class="QPushButton" name="elbow_modelNumber_read">
-        <property name="text">
-         <string>R</string>
-        </property>
-       </widget>
-      </item>
-      <item row="13" column="0">
-       <widget class="QPushButton" name="elbow_alarmShutdown_read">
-        <property name="text">
-         <string>R</string>
-        </property>
-       </widget>
-      </item>
-      <item row="5" column="0">
        <widget class="QPushButton" name="elbow_cw_read">
+        <property name="enabled">
+         <bool>false</bool>
+        </property>
         <property name="text">
          <string>R</string>
         </property>
        </widget>
       </item>
-      <item row="7" column="1">
-       <widget class="QPushButton" name="elbow_hLimitTemp_write">
+      <item row="3" column="0">
+       <widget class="QPushButton" name="elbow_ccw_read">
+        <property name="enabled">
+         <bool>false</bool>
+        </property>
         <property name="text">
-         <string>W</string>
+         <string>R</string>
         </property>
        </widget>
       </item>
       <item row="6" column="1">
-       <widget class="QPushButton" name="elbow_ccw_write">
+       <widget class="QPushButton" name="elbow_lLimitVoltage_write">
+        <property name="enabled">
+         <bool>false</bool>
+        </property>
         <property name="text">
          <string>W</string>
         </property>
        </widget>
       </item>
-      <item row="5" column="1">
-       <widget class="QPushButton" name="elbow_cw_write">
+      <item row="0" column="0">
+       <widget class="QPushButton" name="elbow_baudRate_read">
+        <property name="enabled">
+         <bool>false</bool>
+        </property>
         <property name="text">
-         <string>W</string>
+         <string>R</string>
         </property>
        </widget>
       </item>
-      <item row="4" column="1">
-       <widget class="QPushButton" name="elbow_returnDelay_write">
-        <property name="text">
-         <string>W</string>
-        </property>
-       </widget>
-      </item>
-      <item row="3" column="1">
+      <item row="0" column="1">
        <widget class="QPushButton" name="elbow_baudRate_write">
-        <property name="text">
-         <string>W</string>
+        <property name="enabled">
+         <bool>false</bool>
         </property>
-       </widget>
-      </item>
-      <item row="2" column="1">
-       <widget class="QPushButton" name="elbow_id_write">
-        <property name="text">
-         <string>W</string>
-        </property>
-       </widget>
-      </item>
-      <item row="13" column="1">
-       <widget class="QPushButton" name="elbow_alarmShutdown_write">
         <property name="text">
          <string>W</string>
         </property>
@@ -645,7 +694,7 @@
      </layout>
     </widget>
    </widget>
-   <widget class="QGroupBox" name="groupBox_5">
+   <widget class="QGroupBox" name="elbow_ram">
     <property name="geometry">
      <rect>
       <x>10</x>
@@ -657,12 +706,264 @@
     <property name="title">
      <string>ram</string>
     </property>
+    <widget class="QWidget" name="gridLayoutWidget_5">
+     <property name="geometry">
+      <rect>
+       <x>160</x>
+       <y>20</y>
+       <width>81</width>
+       <height>301</height>
+      </rect>
+     </property>
+     <layout class="QGridLayout" name="gridLayout_7">
+      <item row="4" column="0">
+       <widget class="QPushButton" name="elbow_goalPosition_read">
+        <property name="enabled">
+         <bool>false</bool>
+        </property>
+        <property name="text">
+         <string>R</string>
+        </property>
+       </widget>
+      </item>
+      <item row="12" column="1">
+       <widget class="QPushButton" name="elbow_lock_write">
+        <property name="enabled">
+         <bool>false</bool>
+        </property>
+        <property name="text">
+         <string>W</string>
+        </property>
+       </widget>
+      </item>
+      <item row="9" column="0">
+       <widget class="QPushButton" name="elbow_presentLoad_read">
+        <property name="enabled">
+         <bool>false</bool>
+        </property>
+        <property name="text">
+         <string>R</string>
+        </property>
+       </widget>
+      </item>
+      <item row="7" column="0">
+       <widget class="QPushButton" name="elbow_presentPosition_read">
+        <property name="enabled">
+         <bool>false</bool>
+        </property>
+        <property name="text">
+         <string>R</string>
+        </property>
+       </widget>
+      </item>
+      <item row="12" column="0">
+       <widget class="QPushButton" name="elbow_lock_read">
+        <property name="enabled">
+         <bool>false</bool>
+        </property>
+        <property name="text">
+         <string>R</string>
+        </property>
+       </widget>
+      </item>
+      <item row="10" column="0">
+       <widget class="QPushButton" name="elbow_presentTemp_read">
+        <property name="enabled">
+         <bool>false</bool>
+        </property>
+        <property name="text">
+         <string>R</string>
+        </property>
+       </widget>
+      </item>
+      <item row="11" column="0">
+       <widget class="QPushButton" name="elbow_register_read">
+        <property name="enabled">
+         <bool>false</bool>
+        </property>
+        <property name="text">
+         <string>R</string>
+        </property>
+       </widget>
+      </item>
+      <item row="6" column="0">
+       <widget class="QPushButton" name="elbow_torqueLimit_read">
+        <property name="enabled">
+         <bool>false</bool>
+        </property>
+        <property name="text">
+         <string>R</string>
+        </property>
+       </widget>
+      </item>
+      <item row="8" column="0">
+       <widget class="QPushButton" name="elbow_presentSpeed_read">
+        <property name="enabled">
+         <bool>false</bool>
+        </property>
+        <property name="text">
+         <string>R</string>
+        </property>
+       </widget>
+      </item>
+      <item row="3" column="0">
+       <widget class="QPushButton" name="elbow_ccwSlope_read">
+        <property name="enabled">
+         <bool>false</bool>
+        </property>
+        <property name="text">
+         <string>R</string>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="0">
+       <widget class="QPushButton" name="elbow_cwSlope_read">
+        <property name="enabled">
+         <bool>false</bool>
+        </property>
+        <property name="text">
+         <string>R</string>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="0">
+       <widget class="QPushButton" name="elbow_ccwMargin_read">
+        <property name="enabled">
+         <bool>false</bool>
+        </property>
+        <property name="text">
+         <string>R</string>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="0">
+       <widget class="QPushButton" name="elbow_cwMargin_read">
+        <property name="enabled">
+         <bool>false</bool>
+        </property>
+        <property name="text">
+         <string>R</string>
+        </property>
+       </widget>
+      </item>
+      <item row="13" column="0">
+       <widget class="QPushButton" name="elbow_punch_read">
+        <property name="enabled">
+         <bool>false</bool>
+        </property>
+        <property name="text">
+         <string>R</string>
+        </property>
+       </widget>
+      </item>
+      <item row="5" column="0">
+       <widget class="QPushButton" name="elbow_movingSpeed_read">
+        <property name="enabled">
+         <bool>false</bool>
+        </property>
+        <property name="text">
+         <string>R</string>
+        </property>
+       </widget>
+      </item>
+      <item row="6" column="1">
+       <widget class="QPushButton" name="elbow_torqueLimit_write">
+        <property name="enabled">
+         <bool>false</bool>
+        </property>
+        <property name="text">
+         <string>W</string>
+        </property>
+       </widget>
+      </item>
+      <item row="5" column="1">
+       <widget class="QPushButton" name="elbow_movingSpeed_write">
+        <property name="enabled">
+         <bool>false</bool>
+        </property>
+        <property name="text">
+         <string>W</string>
+        </property>
+       </widget>
+      </item>
+      <item row="3" column="1">
+       <widget class="QPushButton" name="elbow_ccwSlope_write">
+        <property name="enabled">
+         <bool>false</bool>
+        </property>
+        <property name="text">
+         <string>W</string>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="1">
+       <widget class="QPushButton" name="elbow_cwSlope_write">
+        <property name="enabled">
+         <bool>false</bool>
+        </property>
+        <property name="text">
+         <string>W</string>
+        </property>
+       </widget>
+      </item>
+      <item row="13" column="1">
+       <widget class="QPushButton" name="elbow_punch_write">
+        <property name="enabled">
+         <bool>false</bool>
+        </property>
+        <property name="text">
+         <string>W</string>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="1">
+       <widget class="QPushButton" name="elbow_ccwMargin_write">
+        <property name="enabled">
+         <bool>false</bool>
+        </property>
+        <property name="text">
+         <string>W</string>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="1">
+       <widget class="QPushButton" name="elbow_cwMargin_write">
+        <property name="enabled">
+         <bool>false</bool>
+        </property>
+        <property name="text">
+         <string>W</string>
+        </property>
+       </widget>
+      </item>
+      <item row="4" column="1">
+       <widget class="QPushButton" name="elbow_goalPosition_write">
+        <property name="enabled">
+         <bool>false</bool>
+        </property>
+        <property name="text">
+         <string>W</string>
+        </property>
+       </widget>
+      </item>
+      <item row="11" column="1">
+       <widget class="QPushButton" name="elbow_register_write">
+        <property name="enabled">
+         <bool>false</bool>
+        </property>
+        <property name="text">
+         <string>W</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
     <widget class="QWidget" name="gridLayoutWidget_9">
      <property name="geometry">
       <rect>
        <x>10</x>
        <y>20</y>
-       <width>151</width>
+       <width>141</width>
        <height>301</height>
       </rect>
      </property>
@@ -682,6 +983,12 @@
       </item>
       <item row="10" column="1">
        <widget class="QDoubleSpinBox" name="elbow_presentTemp">
+        <property name="readOnly">
+         <bool>true</bool>
+        </property>
+        <property name="buttonSymbols">
+         <enum>QAbstractSpinBox::NoButtons</enum>
+        </property>
         <property name="decimals">
          <number>0</number>
         </property>
@@ -763,6 +1070,12 @@
       </item>
       <item row="7" column="1">
        <widget class="QDoubleSpinBox" name="elbow_presentPosition">
+        <property name="readOnly">
+         <bool>true</bool>
+        </property>
+        <property name="buttonSymbols">
+         <enum>QAbstractSpinBox::NoButtons</enum>
+        </property>
         <property name="decimals">
          <number>0</number>
         </property>
@@ -779,6 +1092,9 @@
       </item>
       <item row="8" column="1">
        <widget class="QDoubleSpinBox" name="elbow_presentSpeed">
+        <property name="buttonSymbols">
+         <enum>QAbstractSpinBox::NoButtons</enum>
+        </property>
         <property name="decimals">
          <number>0</number>
         </property>
@@ -795,6 +1111,9 @@
       </item>
       <item row="9" column="1">
        <widget class="QDoubleSpinBox" name="elbow_presentLoad">
+        <property name="buttonSymbols">
+         <enum>QAbstractSpinBox::NoButtons</enum>
+        </property>
         <property name="decimals">
          <number>0</number>
         </property>
@@ -1091,201 +1410,30 @@
       </item>
      </layout>
     </widget>
-    <widget class="QWidget" name="gridLayoutWidget_5">
-     <property name="geometry">
-      <rect>
-       <x>170</x>
-       <y>20</y>
-       <width>71</width>
-       <height>301</height>
-      </rect>
-     </property>
-     <layout class="QGridLayout" name="gridLayout_7">
-      <item row="4" column="0">
-       <widget class="QPushButton" name="elbow_goalPosition_read">
-        <property name="text">
-         <string>R</string>
-        </property>
-       </widget>
-      </item>
-      <item row="12" column="1">
-       <widget class="QPushButton" name="elbow_lock_write">
-        <property name="text">
-         <string>W</string>
-        </property>
-       </widget>
-      </item>
-      <item row="9" column="0">
-       <widget class="QPushButton" name="elbow_presentLoad_read">
-        <property name="text">
-         <string>R</string>
-        </property>
-       </widget>
-      </item>
-      <item row="7" column="0">
-       <widget class="QPushButton" name="elbow_presentPosition_read">
-        <property name="text">
-         <string>R</string>
-        </property>
-       </widget>
-      </item>
-      <item row="12" column="0">
-       <widget class="QPushButton" name="elbow_lock_read">
-        <property name="text">
-         <string>R</string>
-        </property>
-       </widget>
-      </item>
-      <item row="10" column="0">
-       <widget class="QPushButton" name="elbow_presentTemp_read">
-        <property name="text">
-         <string>R</string>
-        </property>
-       </widget>
-      </item>
-      <item row="11" column="0">
-       <widget class="QPushButton" name="elbow_register_read">
-        <property name="text">
-         <string>R</string>
-        </property>
-       </widget>
-      </item>
-      <item row="6" column="0">
-       <widget class="QPushButton" name="elbow_torqueLimit_read">
-        <property name="text">
-         <string>R</string>
-        </property>
-       </widget>
-      </item>
-      <item row="8" column="0">
-       <widget class="QPushButton" name="elbow_presentSpeed_read">
-        <property name="text">
-         <string>R</string>
-        </property>
-       </widget>
-      </item>
-      <item row="3" column="0">
-       <widget class="QPushButton" name="elbow_ccwSlope_read">
-        <property name="text">
-         <string>R</string>
-        </property>
-       </widget>
-      </item>
-      <item row="2" column="0">
-       <widget class="QPushButton" name="elbow_cwSlope_read">
-        <property name="text">
-         <string>R</string>
-        </property>
-       </widget>
-      </item>
-      <item row="1" column="0">
-       <widget class="QPushButton" name="elbow_ccwMargin_read">
-        <property name="text">
-         <string>R</string>
-        </property>
-       </widget>
-      </item>
-      <item row="0" column="0">
-       <widget class="QPushButton" name="elbow_cwMargin_read">
-        <property name="text">
-         <string>R</string>
-        </property>
-       </widget>
-      </item>
-      <item row="13" column="0">
-       <widget class="QPushButton" name="elbow_punch_read">
-        <property name="text">
-         <string>R</string>
-        </property>
-       </widget>
-      </item>
-      <item row="5" column="0">
-       <widget class="QPushButton" name="elbow_movingSpeed_read">
-        <property name="text">
-         <string>R</string>
-        </property>
-       </widget>
-      </item>
-      <item row="6" column="1">
-       <widget class="QPushButton" name="elbow_torqueLimit_write">
-        <property name="text">
-         <string>W</string>
-        </property>
-       </widget>
-      </item>
-      <item row="5" column="1">
-       <widget class="QPushButton" name="elbow_movingSpeed_write">
-        <property name="text">
-         <string>W</string>
-        </property>
-       </widget>
-      </item>
-      <item row="3" column="1">
-       <widget class="QPushButton" name="elbow_ccwSlope_write">
-        <property name="text">
-         <string>W</string>
-        </property>
-       </widget>
-      </item>
-      <item row="2" column="1">
-       <widget class="QPushButton" name="elbow_cwSlope_write">
-        <property name="text">
-         <string>W</string>
-        </property>
-       </widget>
-      </item>
-      <item row="13" column="1">
-       <widget class="QPushButton" name="elbow_punch_write">
-        <property name="text">
-         <string>W</string>
-        </property>
-       </widget>
-      </item>
-      <item row="1" column="1">
-       <widget class="QPushButton" name="elbow_ccwMargin_write">
-        <property name="text">
-         <string>W</string>
-        </property>
-       </widget>
-      </item>
-      <item row="0" column="1">
-       <widget class="QPushButton" name="elbow_cwMargin_write">
-        <property name="text">
-         <string>W</string>
-        </property>
-       </widget>
-      </item>
-      <item row="4" column="1">
-       <widget class="QPushButton" name="elbow_goalPosition_write">
-        <property name="text">
-         <string>W</string>
-        </property>
-       </widget>
-      </item>
-      <item row="11" column="1">
-       <widget class="QPushButton" name="elbow_register_write">
-        <property name="text">
-         <string>W</string>
-        </property>
-       </widget>
-      </item>
-     </layout>
-    </widget>
    </widget>
   </widget>
-  <widget class="QGroupBox" name="groupBox_3">
+  <widget class="QGroupBox" name="shoulder">
    <property name="geometry">
     <rect>
-     <x>360</x>
+     <x>10</x>
      <y>0</y>
      <width>261</width>
      <height>691</height>
     </rect>
    </property>
+   <property name="styleSheet">
+    <string notr="true"> QGroupBox {
+ background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
+                                   stop: 0 #E0E0E0, stop: 1 #FFFFFF);
+ border: 2px solid gray;
+ border-radius: 5px;
+ margin-top: 1ex; /* leave space at the top for the title */
+}</string>
+   </property>
    <property name="title">
     <string>SHOULDER</string>
    </property>
-   <widget class="QGroupBox" name="groupBox_4">
+   <widget class="QGroupBox" name="shoulder_eeprom">
     <property name="geometry">
      <rect>
       <x>10</x>
@@ -1297,206 +1445,12 @@
     <property name="title">
      <string>eeprom</string>
     </property>
-    <widget class="QWidget" name="gridLayoutWidget_3">
-     <property name="geometry">
-      <rect>
-       <x>160</x>
-       <y>20</y>
-       <width>71</width>
-       <height>291</height>
-      </rect>
-     </property>
-     <layout class="QGridLayout" name="gridLayout_4">
-      <item row="4" column="0">
-       <widget class="QPushButton" name="shoulder_returnDelay_read">
-        <property name="text">
-         <string>R</string>
-        </property>
-       </widget>
-      </item>
-      <item row="12" column="1">
-       <widget class="QPushButton" name="shoulder_alarmLed_write">
-        <property name="text">
-         <string>W</string>
-        </property>
-       </widget>
-      </item>
-      <item row="9" column="0">
-       <widget class="QPushButton" name="shoulder_lLimiitVoltage_read">
-        <property name="text">
-         <string>R</string>
-        </property>
-       </widget>
-      </item>
-      <item row="10" column="1">
-       <widget class="QPushButton" name="shoulder_maxTorque_write">
-        <property name="text">
-         <string>W</string>
-        </property>
-       </widget>
-      </item>
-      <item row="7" column="0">
-       <widget class="QPushButton" name="shoulder_hLimitTemp_read">
-        <property name="text">
-         <string>R</string>
-        </property>
-       </widget>
-      </item>
-      <item row="11" column="1">
-       <widget class="QPushButton" name="shoulder_statusReturn_write">
-        <property name="text">
-         <string>W</string>
-        </property>
-       </widget>
-      </item>
-      <item row="12" column="0">
-       <widget class="QPushButton" name="shoulder_alarmLed_read">
-        <property name="text">
-         <string>R</string>
-        </property>
-       </widget>
-      </item>
-      <item row="10" column="0">
-       <widget class="QPushButton" name="shoulder_maxTorque_read">
-        <property name="text">
-         <string>R</string>
-        </property>
-       </widget>
-      </item>
-      <item row="11" column="0">
-       <widget class="QPushButton" name="shoulder_statusReturn_read">
-        <property name="text">
-         <string>R</string>
-        </property>
-       </widget>
-      </item>
-      <item row="6" column="0">
-       <widget class="QPushButton" name="shoulder_ccw_read">
-        <property name="text">
-         <string>R</string>
-        </property>
-       </widget>
-      </item>
-      <item row="8" column="0">
-       <widget class="QPushButton" name="shoulder_hLimitVoltage_read">
-        <property name="text">
-         <string>R</string>
-        </property>
-       </widget>
-      </item>
-      <item row="9" column="1">
-       <widget class="QPushButton" name="shoulder_lLimitVoltage_write">
-        <property name="text">
-         <string>W</string>
-        </property>
-       </widget>
-      </item>
-      <item row="8" column="1">
-       <widget class="QPushButton" name="shoulder_hLimitVoltage_write">
-        <property name="text">
-         <string>W</string>
-        </property>
-       </widget>
-      </item>
-      <item row="3" column="0">
-       <widget class="QPushButton" name="shoulder_baudRate_read">
-        <property name="text">
-         <string>R</string>
-        </property>
-       </widget>
-      </item>
-      <item row="2" column="0">
-       <widget class="QPushButton" name="shoulder_id_read">
-        <property name="text">
-         <string>R</string>
-        </property>
-       </widget>
-      </item>
-      <item row="1" column="0">
-       <widget class="QPushButton" name="shoulder_firmware_read">
-        <property name="text">
-         <string>R</string>
-        </property>
-       </widget>
-      </item>
-      <item row="0" column="0">
-       <widget class="QPushButton" name="shoulder_modelNumber_read">
-        <property name="text">
-         <string>R</string>
-        </property>
-       </widget>
-      </item>
-      <item row="13" column="0">
-       <widget class="QPushButton" name="shoulder_alarmShutdown_read">
-        <property name="text">
-         <string>R</string>
-        </property>
-       </widget>
-      </item>
-      <item row="5" column="0">
-       <widget class="QPushButton" name="shoulder_cw_read">
-        <property name="text">
-         <string>R</string>
-        </property>
-       </widget>
-      </item>
-      <item row="7" column="1">
-       <widget class="QPushButton" name="shoulder_hLimitTemp_write">
-        <property name="text">
-         <string>W</string>
-        </property>
-       </widget>
-      </item>
-      <item row="6" column="1">
-       <widget class="QPushButton" name="shoulder_ccw_write">
-        <property name="text">
-         <string>W</string>
-        </property>
-       </widget>
-      </item>
-      <item row="5" column="1">
-       <widget class="QPushButton" name="shoulder_cw_write">
-        <property name="text">
-         <string>W</string>
-        </property>
-       </widget>
-      </item>
-      <item row="4" column="1">
-       <widget class="QPushButton" name="shoulder_returnDelay_write">
-        <property name="text">
-         <string>W</string>
-        </property>
-       </widget>
-      </item>
-      <item row="3" column="1">
-       <widget class="QPushButton" name="shoulder_baudRate_write">
-        <property name="text">
-         <string>W</string>
-        </property>
-       </widget>
-      </item>
-      <item row="2" column="1">
-       <widget class="QPushButton" name="shoulder_id_write">
-        <property name="text">
-         <string>W</string>
-        </property>
-       </widget>
-      </item>
-      <item row="13" column="1">
-       <widget class="QPushButton" name="shoulder_alarmShutdown_write">
-        <property name="text">
-         <string>W</string>
-        </property>
-       </widget>
-      </item>
-     </layout>
-    </widget>
     <widget class="QWidget" name="gridLayoutWidget_4">
      <property name="geometry">
       <rect>
        <x>10</x>
        <y>20</y>
-       <width>141</width>
+       <width>133</width>
        <height>291</height>
       </rect>
      </property>
@@ -1620,6 +1574,15 @@
       </item>
       <item row="1" column="1">
        <widget class="QDoubleSpinBox" name="shoulder_firmware">
+        <property name="enabled">
+         <bool>true</bool>
+        </property>
+        <property name="readOnly">
+         <bool>true</bool>
+        </property>
+        <property name="buttonSymbols">
+         <enum>QAbstractSpinBox::NoButtons</enum>
+        </property>
         <property name="decimals">
          <number>0</number>
         </property>
@@ -1627,6 +1590,15 @@
       </item>
       <item row="0" column="1">
        <widget class="QDoubleSpinBox" name="shoulder_modelNumber">
+        <property name="enabled">
+         <bool>true</bool>
+        </property>
+        <property name="readOnly">
+         <bool>true</bool>
+        </property>
+        <property name="buttonSymbols">
+         <enum>QAbstractSpinBox::NoButtons</enum>
+        </property>
         <property name="decimals">
          <number>0</number>
         </property>
@@ -1660,6 +1632,9 @@
       </item>
       <item row="4" column="1">
        <widget class="QDoubleSpinBox" name="shoulder_returnDelay">
+        <property name="buttonSymbols">
+         <enum>QAbstractSpinBox::UpDownArrows</enum>
+        </property>
         <property name="decimals">
          <number>0</number>
         </property>
@@ -1826,6 +1801,12 @@
       </item>
       <item row="2" column="1">
        <widget class="QDoubleSpinBox" name="shoulder_id">
+        <property name="readOnly">
+         <bool>true</bool>
+        </property>
+        <property name="buttonSymbols">
+         <enum>QAbstractSpinBox::NoButtons</enum>
+        </property>
         <property name="decimals">
          <number>0</number>
         </property>
@@ -1881,15 +1862,247 @@
         </item>
         <item>
          <property name="text">
-          <string>217</string>
+          <string>207</string>
          </property>
         </item>
        </widget>
       </item>
      </layout>
     </widget>
+    <widget class="QWidget" name="gridLayoutWidget_3">
+     <property name="geometry">
+      <rect>
+       <x>150</x>
+       <y>80</y>
+       <width>81</width>
+       <height>231</height>
+      </rect>
+     </property>
+     <layout class="QGridLayout" name="gridLayout_4">
+      <item row="3" column="1">
+       <widget class="QPushButton" name="shoulder_ccw_write">
+        <property name="enabled">
+         <bool>false</bool>
+        </property>
+        <property name="text">
+         <string>W</string>
+        </property>
+       </widget>
+      </item>
+      <item row="6" column="1">
+       <widget class="QPushButton" name="shoulder_lLimitVoltage_write">
+        <property name="enabled">
+         <bool>false</bool>
+        </property>
+        <property name="text">
+         <string>W</string>
+        </property>
+       </widget>
+      </item>
+      <item row="3" column="0">
+       <widget class="QPushButton" name="shoulder_ccw_read">
+        <property name="enabled">
+         <bool>false</bool>
+        </property>
+        <property name="text">
+         <string>R</string>
+        </property>
+       </widget>
+      </item>
+      <item row="6" column="0">
+       <widget class="QPushButton" name="shoulder_lLimiitVoltage_read">
+        <property name="enabled">
+         <bool>false</bool>
+        </property>
+        <property name="text">
+         <string>R</string>
+        </property>
+       </widget>
+      </item>
+      <item row="7" column="1">
+       <widget class="QPushButton" name="shoulder_maxTorque_write">
+        <property name="enabled">
+         <bool>false</bool>
+        </property>
+        <property name="text">
+         <string>W</string>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="1">
+       <widget class="QPushButton" name="shoulder_baudRate_write">
+        <property name="enabled">
+         <bool>false</bool>
+        </property>
+        <property name="text">
+         <string>W</string>
+        </property>
+       </widget>
+      </item>
+      <item row="4" column="0">
+       <widget class="QPushButton" name="shoulder_hLimitTemp_read">
+        <property name="enabled">
+         <bool>false</bool>
+        </property>
+        <property name="text">
+         <string>R</string>
+        </property>
+       </widget>
+      </item>
+      <item row="5" column="1">
+       <widget class="QPushButton" name="shoulder_hLimitVoltage_write">
+        <property name="enabled">
+         <bool>false</bool>
+        </property>
+        <property name="text">
+         <string>W</string>
+        </property>
+       </widget>
+      </item>
+      <item row="7" column="0">
+       <widget class="QPushButton" name="shoulder_maxTorque_read">
+        <property name="enabled">
+         <bool>false</bool>
+        </property>
+        <property name="text">
+         <string>R</string>
+        </property>
+       </widget>
+      </item>
+      <item row="8" column="0">
+       <widget class="QPushButton" name="shoulder_statusReturn_read">
+        <property name="enabled">
+         <bool>false</bool>
+        </property>
+        <property name="text">
+         <string>R</string>
+        </property>
+       </widget>
+      </item>
+      <item row="10" column="0">
+       <widget class="QPushButton" name="shoulder_alarmShutdown_read">
+        <property name="enabled">
+         <bool>false</bool>
+        </property>
+        <property name="text">
+         <string>R</string>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="0">
+       <widget class="QPushButton" name="shoulder_cw_read">
+        <property name="enabled">
+         <bool>false</bool>
+        </property>
+        <property name="text">
+         <string>R</string>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="1">
+       <widget class="QPushButton" name="shoulder_cw_write">
+        <property name="enabled">
+         <bool>false</bool>
+        </property>
+        <property name="text">
+         <string>W</string>
+        </property>
+       </widget>
+      </item>
+      <item row="9" column="0">
+       <widget class="QPushButton" name="shoulder_alarmLed_read">
+        <property name="enabled">
+         <bool>false</bool>
+        </property>
+        <property name="text">
+         <string>R</string>
+        </property>
+       </widget>
+      </item>
+      <item row="9" column="1">
+       <widget class="QPushButton" name="shoulder_alarmLed_write">
+        <property name="enabled">
+         <bool>false</bool>
+        </property>
+        <property name="text">
+         <string>W</string>
+        </property>
+       </widget>
+      </item>
+      <item row="4" column="1">
+       <widget class="QPushButton" name="shoulder_hLimitTemp_write">
+        <property name="enabled">
+         <bool>false</bool>
+        </property>
+        <property name="text">
+         <string>W</string>
+        </property>
+       </widget>
+      </item>
+      <item row="8" column="1">
+       <widget class="QPushButton" name="shoulder_statusReturn_write">
+        <property name="enabled">
+         <bool>false</bool>
+        </property>
+        <property name="text">
+         <string>W</string>
+        </property>
+       </widget>
+      </item>
+      <item row="5" column="0">
+       <widget class="QPushButton" name="shoulder_hLimitVoltage_read">
+        <property name="enabled">
+         <bool>false</bool>
+        </property>
+        <property name="text">
+         <string>R</string>
+        </property>
+       </widget>
+      </item>
+      <item row="10" column="1">
+       <widget class="QPushButton" name="shoulder_alarmShutdown_write">
+        <property name="enabled">
+         <bool>false</bool>
+        </property>
+        <property name="text">
+         <string>W</string>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="0">
+       <widget class="QPushButton" name="shoulder_returnDelay_read">
+        <property name="enabled">
+         <bool>false</bool>
+        </property>
+        <property name="text">
+         <string>R</string>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="0">
+       <widget class="QPushButton" name="shoulder_baudRate_read">
+        <property name="enabled">
+         <bool>false</bool>
+        </property>
+        <property name="text">
+         <string>R</string>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="1">
+       <widget class="QPushButton" name="shoulder_returnDelay_write">
+        <property name="enabled">
+         <bool>false</bool>
+        </property>
+        <property name="text">
+         <string>W</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
    </widget>
-   <widget class="QGroupBox" name="groupBox_6">
+   <widget class="QGroupBox" name="shoulder_ram">
     <property name="geometry">
      <rect>
       <x>10</x>
@@ -1906,7 +2119,7 @@
       <rect>
        <x>10</x>
        <y>20</y>
-       <width>141</width>
+       <width>134</width>
        <height>301</height>
       </rect>
      </property>
@@ -1926,6 +2139,12 @@
       </item>
       <item row="10" column="1">
        <widget class="QDoubleSpinBox" name="shoulder_presentTemp">
+        <property name="readOnly">
+         <bool>true</bool>
+        </property>
+        <property name="buttonSymbols">
+         <enum>QAbstractSpinBox::NoButtons</enum>
+        </property>
         <property name="decimals">
          <number>0</number>
         </property>
@@ -2007,6 +2226,12 @@
       </item>
       <item row="7" column="1">
        <widget class="QDoubleSpinBox" name="shoulder_presentPosition">
+        <property name="readOnly">
+         <bool>true</bool>
+        </property>
+        <property name="buttonSymbols">
+         <enum>QAbstractSpinBox::NoButtons</enum>
+        </property>
         <property name="decimals">
          <number>0</number>
         </property>
@@ -2023,6 +2248,12 @@
       </item>
       <item row="8" column="1">
        <widget class="QDoubleSpinBox" name="shoulder_presentSpeed">
+        <property name="readOnly">
+         <bool>true</bool>
+        </property>
+        <property name="buttonSymbols">
+         <enum>QAbstractSpinBox::NoButtons</enum>
+        </property>
         <property name="decimals">
          <number>0</number>
         </property>
@@ -2039,6 +2270,12 @@
       </item>
       <item row="9" column="1">
        <widget class="QDoubleSpinBox" name="shoulder_presentLoad">
+        <property name="readOnly">
+         <bool>true</bool>
+        </property>
+        <property name="buttonSymbols">
+         <enum>QAbstractSpinBox::NoButtons</enum>
+        </property>
         <property name="decimals">
          <number>0</number>
         </property>
@@ -2338,15 +2575,18 @@
     <widget class="QWidget" name="gridLayoutWidget_6">
      <property name="geometry">
       <rect>
-       <x>160</x>
+       <x>150</x>
        <y>20</y>
-       <width>71</width>
+       <width>81</width>
        <height>301</height>
       </rect>
      </property>
      <layout class="QGridLayout" name="gridLayout_8">
       <item row="4" column="0">
        <widget class="QPushButton" name="shoulder_goalPosition_read">
+        <property name="enabled">
+         <bool>false</bool>
+        </property>
         <property name="text">
          <string>R</string>
         </property>
@@ -2354,6 +2594,9 @@
       </item>
       <item row="12" column="1">
        <widget class="QPushButton" name="shoulder_lock_write">
+        <property name="enabled">
+         <bool>false</bool>
+        </property>
         <property name="text">
          <string>W</string>
         </property>
@@ -2361,6 +2604,9 @@
       </item>
       <item row="9" column="0">
        <widget class="QPushButton" name="shoulder_presentLoad_read">
+        <property name="enabled">
+         <bool>false</bool>
+        </property>
         <property name="text">
          <string>R</string>
         </property>
@@ -2368,6 +2614,9 @@
       </item>
       <item row="7" column="0">
        <widget class="QPushButton" name="shoulder_presentPosition_read">
+        <property name="enabled">
+         <bool>false</bool>
+        </property>
         <property name="text">
          <string>R</string>
         </property>
@@ -2375,6 +2624,9 @@
       </item>
       <item row="12" column="0">
        <widget class="QPushButton" name="shoulder_lock_read">
+        <property name="enabled">
+         <bool>false</bool>
+        </property>
         <property name="text">
          <string>R</string>
         </property>
@@ -2382,6 +2634,9 @@
       </item>
       <item row="10" column="0">
        <widget class="QPushButton" name="shoulder_presentTemp_read">
+        <property name="enabled">
+         <bool>false</bool>
+        </property>
         <property name="text">
          <string>R</string>
         </property>
@@ -2389,6 +2644,9 @@
       </item>
       <item row="11" column="0">
        <widget class="QPushButton" name="shoulder_register_read">
+        <property name="enabled">
+         <bool>false</bool>
+        </property>
         <property name="text">
          <string>R</string>
         </property>
@@ -2396,6 +2654,9 @@
       </item>
       <item row="6" column="0">
        <widget class="QPushButton" name="shoulder_torqueLimit_read">
+        <property name="enabled">
+         <bool>false</bool>
+        </property>
         <property name="text">
          <string>R</string>
         </property>
@@ -2403,6 +2664,9 @@
       </item>
       <item row="8" column="0">
        <widget class="QPushButton" name="shoulder_presentSpeed_read">
+        <property name="enabled">
+         <bool>false</bool>
+        </property>
         <property name="text">
          <string>R</string>
         </property>
@@ -2410,6 +2674,9 @@
       </item>
       <item row="3" column="0">
        <widget class="QPushButton" name="shoulder_ccwSlope_read">
+        <property name="enabled">
+         <bool>false</bool>
+        </property>
         <property name="text">
          <string>R</string>
         </property>
@@ -2417,6 +2684,9 @@
       </item>
       <item row="2" column="0">
        <widget class="QPushButton" name="shoulder_cwSlope_read">
+        <property name="enabled">
+         <bool>false</bool>
+        </property>
         <property name="text">
          <string>R</string>
         </property>
@@ -2424,6 +2694,9 @@
       </item>
       <item row="1" column="0">
        <widget class="QPushButton" name="shoulder_ccwMargin_read">
+        <property name="enabled">
+         <bool>false</bool>
+        </property>
         <property name="text">
          <string>R</string>
         </property>
@@ -2431,6 +2704,9 @@
       </item>
       <item row="0" column="0">
        <widget class="QPushButton" name="shoulder_cwMargin_read">
+        <property name="enabled">
+         <bool>false</bool>
+        </property>
         <property name="text">
          <string>R</string>
         </property>
@@ -2438,6 +2714,9 @@
       </item>
       <item row="13" column="0">
        <widget class="QPushButton" name="shoulder_punch_read">
+        <property name="enabled">
+         <bool>false</bool>
+        </property>
         <property name="text">
          <string>R</string>
         </property>
@@ -2445,6 +2724,9 @@
       </item>
       <item row="5" column="0">
        <widget class="QPushButton" name="shoulder_movingSpeed_read">
+        <property name="enabled">
+         <bool>false</bool>
+        </property>
         <property name="text">
          <string>R</string>
         </property>
@@ -2452,6 +2734,9 @@
       </item>
       <item row="6" column="1">
        <widget class="QPushButton" name="shoulder_torqueLimit_write">
+        <property name="enabled">
+         <bool>false</bool>
+        </property>
         <property name="text">
          <string>W</string>
         </property>
@@ -2459,6 +2744,9 @@
       </item>
       <item row="5" column="1">
        <widget class="QPushButton" name="shoulder_movingSpeed_write">
+        <property name="enabled">
+         <bool>false</bool>
+        </property>
         <property name="text">
          <string>W</string>
         </property>
@@ -2466,6 +2754,9 @@
       </item>
       <item row="3" column="1">
        <widget class="QPushButton" name="shoulder_ccwSlope_write">
+        <property name="enabled">
+         <bool>false</bool>
+        </property>
         <property name="text">
          <string>W</string>
         </property>
@@ -2473,6 +2764,9 @@
       </item>
       <item row="2" column="1">
        <widget class="QPushButton" name="shoulder_cwSlope_write">
+        <property name="enabled">
+         <bool>false</bool>
+        </property>
         <property name="text">
          <string>W</string>
         </property>
@@ -2480,6 +2774,9 @@
       </item>
       <item row="13" column="1">
        <widget class="QPushButton" name="shoulder_punch_write">
+        <property name="enabled">
+         <bool>false</bool>
+        </property>
         <property name="text">
          <string>W</string>
         </property>
@@ -2487,6 +2784,9 @@
       </item>
       <item row="1" column="1">
        <widget class="QPushButton" name="shoulder_ccwMargin_write">
+        <property name="enabled">
+         <bool>false</bool>
+        </property>
         <property name="text">
          <string>W</string>
         </property>
@@ -2494,6 +2794,9 @@
       </item>
       <item row="0" column="1">
        <widget class="QPushButton" name="shoulder_cwMargin_write">
+        <property name="enabled">
+         <bool>false</bool>
+        </property>
         <property name="text">
          <string>W</string>
         </property>
@@ -2501,6 +2804,9 @@
       </item>
       <item row="4" column="1">
        <widget class="QPushButton" name="shoulder_goalPosition_write">
+        <property name="enabled">
+         <bool>false</bool>
+        </property>
         <property name="text">
          <string>W</string>
         </property>
@@ -2508,6 +2814,9 @@
       </item>
       <item row="11" column="1">
        <widget class="QPushButton" name="shoulder_register_write">
+        <property name="enabled">
+         <bool>false</bool>
+        </property>
         <property name="text">
          <string>W</string>
         </property>
@@ -2515,6 +2824,228 @@
       </item>
      </layout>
     </widget>
+   </widget>
+  </widget>
+  <widget class="QGroupBox" name="h">
+   <property name="geometry">
+    <rect>
+     <x>640</x>
+     <y>0</y>
+     <width>241</width>
+     <height>171</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true"> QGroupBox {
+ background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
+                                   stop: 0 #E0E0E0, stop: 1 #FFFFFF);
+ border: 2px solid gray;
+ border-radius: 5px;
+ margin-top: 1ex; /* leave space at the top for the title */
+}</string>
+   </property>
+   <property name="title">
+    <string>HAND</string>
+   </property>
+   <widget class="QGroupBox" name="groupBox_8">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>20</y>
+      <width>221</width>
+      <height>101</height>
+     </rect>
+    </property>
+    <property name="title">
+     <string/>
+    </property>
+    <widget class="QWidget" name="gridLayoutWidget_7">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>10</y>
+       <width>123</width>
+       <height>81</height>
+      </rect>
+     </property>
+     <layout class="QGridLayout" name="gridLayout_5">
+      <item row="0" column="1">
+       <widget class="QSpinBox" name="hand_id">
+        <property name="buttonSymbols">
+         <enum>QAbstractSpinBox::NoButtons</enum>
+        </property>
+        <property name="maximum">
+         <number>254</number>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="1">
+       <widget class="QSpinBox" name="hand_goalPosition">
+        <property name="maximum">
+         <number>1023</number>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="0">
+       <widget class="QLabel" name="label">
+        <property name="text">
+         <string>max torque</string>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignCenter</set>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="1">
+       <widget class="QSpinBox" name="hand_maxTorque">
+        <property name="maximum">
+         <number>255</number>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="0">
+       <widget class="QLabel" name="label_2">
+        <property name="text">
+         <string>id</string>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignCenter</set>
+        </property>
+       </widget>
+      </item>
+      <item row="3" column="1">
+       <widget class="QSpinBox" name="hand_movingSpeed">
+        <property name="maximum">
+         <number>1023</number>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="0">
+       <widget class="QLabel" name="label_3">
+        <property name="text">
+         <string>goal position</string>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignCenter</set>
+        </property>
+       </widget>
+      </item>
+      <item row="3" column="0">
+       <widget class="QLabel" name="label_4">
+        <property name="text">
+         <string>moving speed</string>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignCenter</set>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+    <widget class="QWidget" name="gridLayoutWidget_8">
+     <property name="geometry">
+      <rect>
+       <x>140</x>
+       <y>30</y>
+       <width>71</width>
+       <height>61</height>
+      </rect>
+     </property>
+     <layout class="QGridLayout" name="gridLayout_6">
+      <item row="1" column="1">
+       <widget class="QPushButton" name="hand_goalPosition_write">
+        <property name="enabled">
+         <bool>false</bool>
+        </property>
+        <property name="text">
+         <string>W</string>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="0">
+       <widget class="QPushButton" name="hand_maxTorque_read">
+        <property name="enabled">
+         <bool>false</bool>
+        </property>
+        <property name="text">
+         <string>R</string>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="0">
+       <widget class="QPushButton" name="hand_goalPosition_read">
+        <property name="enabled">
+         <bool>false</bool>
+        </property>
+        <property name="text">
+         <string>R</string>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="1">
+       <widget class="QPushButton" name="hand_maxTorque_write">
+        <property name="enabled">
+         <bool>false</bool>
+        </property>
+        <property name="text">
+         <string>W</string>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="0">
+       <widget class="QPushButton" name="hand_movingSpeed_read">
+        <property name="enabled">
+         <bool>false</bool>
+        </property>
+        <property name="text">
+         <string>R</string>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="1">
+       <widget class="QPushButton" name="hand_movingSpeed_write">
+        <property name="enabled">
+         <bool>false</bool>
+        </property>
+        <property name="text">
+         <string>W</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </widget>
+   <widget class="QPushButton" name="setHand">
+    <property name="enabled">
+     <bool>false</bool>
+    </property>
+    <property name="geometry">
+     <rect>
+      <x>20</x>
+      <y>130</y>
+      <width>81</width>
+      <height>23</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Set Hand</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="setDynamixel">
+    <property name="enabled">
+     <bool>false</bool>
+    </property>
+    <property name="geometry">
+     <rect>
+      <x>150</x>
+      <y>130</y>
+      <width>81</width>
+      <height>23</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Set Dynamixel</string>
+    </property>
    </widget>
   </widget>
  </widget>

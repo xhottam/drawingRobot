@@ -45,8 +45,20 @@ int SerialPort::connect(const wchar_t* device) {
 	serialPortHandle = CreateFile(device, GENERIC_READ | GENERIC_WRITE, 0, NULL, OPEN_EXISTING, NULL, NULL);
 
 	if (serialPortHandle != INVALID_HANDLE_VALUE) {
-		if(!SetCommState(serialPortHandle,&dcb))
-			error=2;
+		if (!SetCommState(serialPortHandle, &dcb)) {
+			error = 2;
+		}else {
+			// Set timeouts
+			COMMTIMEOUTS timeout = { 0 };
+			timeout.ReadIntervalTimeout = 50;
+			timeout.ReadTotalTimeoutConstant = 50;
+			timeout.ReadTotalTimeoutMultiplier = 50;
+			timeout.WriteTotalTimeoutConstant = 50;
+			timeout.WriteTotalTimeoutMultiplier = 10;
+
+			SetCommTimeouts(serialPortHandle, &timeout);
+		}
+			
 	}
 	else {
 		error=1;
@@ -58,6 +70,8 @@ int SerialPort::connect(const wchar_t* device) {
 	else {
 		clear();
 	}
+
+
 
 	return error; 
 }

@@ -251,14 +251,21 @@ int Dynamixel::setWord(int id, int address, int value)
 
 	return pos;
 }
-void Dynamixel::moveDrawingArm(SerialPort *serialPort, int hombro, int codo)
+void Dynamixel::moveDrawingArm(SerialPort *serialPort, int hombro, int codo,bool difference)
 {
 	
 	int n = setMoveDrawingArm(hombro,codo);
 	long l = serialPort->sendArray(buffer, n);
-	Sleep(0);
+	Sleep(16);
 	serialPort->clear();
-	Sleep(waitTime);
+	Sleep(16);
+	/**if (hombro > codo) {
+		while (dynamixel.isMoving(serialPort, 1)) {};
+	}else {
+		while (dynamixel.isMoving(serialPort, 2)) {};
+	}*/
+	
+	//if (difference) { while (dynamixel.isMoving(serialPort, 1) || dynamixel.isMoving(serialPort, 2)) {} }
 }
 bool Dynamixel::isMoving(SerialPort * serialPort, int id)
 {
@@ -266,6 +273,17 @@ bool Dynamixel::isMoving(SerialPort * serialPort, int id)
 		return true;
 	}else { return false; }
 	
+}
+void Dynamixel::penUP(SerialPort * serialPort, int position)
+{
+	int pencilOffset = 100;
+	dynamixel.dxl_write_word(serialPort, id_pencil, AXM_GOAL_POSITION_L, (position - pencilOffset));
+	while (dynamixel.isMoving(serialPort, id_pencil)) {}
+}
+void Dynamixel::penDown(SerialPort * serialPort, int position)
+{
+	dynamixel.dxl_write_word(serialPort, id_pencil,AXM_GOAL_POSITION_L, position);
+	while (dynamixel.isMoving(serialPort, id_pencil)) {};
 }
 /**int Dynamixel::setMoveDrawingArm(int hombro, int codo)
 {
@@ -315,7 +333,8 @@ bool Dynamixel::isMoving(SerialPort * serialPort, int id)
 	numberOfParameters++;
 
 	// bodyLength
-	//(L + 1) * N + 4 (L: Data length for each Dynamixel actuator, N: The number of Dynamixel actuators) 	//buffer[3] = (byte)(numberOfParameters + 4);
+	//(L + 1) * N + 4 (L: Data length for each Dynamixel actuator, N: The number of Dynamixel actuators) 
+	//buffer[3] = (byte)(numberOfParameters + 4);
 	buffer[3] = (byte)(10);
 	byte checksum = checkSumatory(buffer, pos);
 	buffer[pos++] = checksum;
@@ -364,7 +383,8 @@ int Dynamixel::setMoveDrawingArm(int hombro, int codo)
 	buffer[pos++] = hexH;
 	
 	// bodyLength
-	//(L + 1) * N + 4 (L: Data length for each Dynamixel actuator, N: The number of Dynamixel actuators) 	//buffer[3] = (byte)(numberOfParameters + 4);
+	//(L + 1) * N + 4 (L: Data length for each Dynamixel actuator, N: The number of Dynamixel actuators) 
+	//buffer[3] = (byte)(numberOfParameters + 4);
 	buffer[3] = (byte)(10);
 	byte checksum = checkSumatory(buffer, pos);
 	buffer[pos++] = checksum;

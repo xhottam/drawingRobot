@@ -21,10 +21,10 @@ class Dynamixel {
 
 		int id_hombro = 1;
 		int id_codo = 2;
-		int id_pencil = 3;
+		int id_pencil = 4;
 
 		static const int BufferSize=1024;
-		static const int waitTime=16;
+		static const int waitTime=50;
 
 		byte buffer[BufferSize];
 		byte bufferIn[BufferSize];
@@ -321,8 +321,10 @@ class Dynamixel {
 		int dxl_read_word(SerialPort *serialPort,int id, int address);
 		void dxl_write_word(SerialPort *serialPort,int id, int address, int value);
 		ControlTable readControlTable(SerialPort *serialPort, int id);
-		void moveDrawingArm(SerialPort *serialPort,int hombro,int codo);
+		void moveDrawingArm(SerialPort *serialPort,int hombro,int codo,bool difference);
 		bool isMoving(SerialPort *serialPort, int id);
+		void penUP(SerialPort *serialPort, int position);
+		void penDown(SerialPort *serialPort, int position);
 			
 			
 };

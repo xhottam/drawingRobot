@@ -7,9 +7,8 @@ OGLWidget::OGLWidget(QWidget *parent)
 	shoulderRotation = 150;
 	elbowRotation  = 150;
 	shoulderRotation = map(shoulderRotation, 0, 300, -150, 150);
-	elbowRotation    = map(elbowRotation, 0, 300, -150,150);
-	//174.78|31.085
-	//173.9|40.4692
+	elbowRotation    = map(elbowRotation , 0, 300, -150, 150);
+	//157.478|253.372
 }
 
 OGLWidget::~OGLWidget()
@@ -21,7 +20,7 @@ void OGLWidget::setViewAngles(float _shoulderRotation, float _elbowRotation)
 {
 
 	shoulderRotation = map(_shoulderRotation,0,300,-150,150);
-	elbowRotation = map(_elbowRotation, 0, 300, -150, 150);
+	elbowRotation = map(_elbowRotation  , 0, 300, -150, 150);
 
 	this->repaint();
 	
@@ -45,7 +44,7 @@ void OGLWidget::initializeGL()
 void OGLWidget::draw() {
 
 	std::cout << shoulderRotation << std::endl;
-	std::cout << elbowRotation << std::endl;
+	std::cout << elbowRotation  << std::endl;
 
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();

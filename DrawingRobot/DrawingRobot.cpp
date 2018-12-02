@@ -2,7 +2,7 @@
 #include "QStandardItemModel"
 #include "svg.h"
 #include "oglwidget.h"
-
+#include <iostream>
 
 
 DrawingRobot::DrawingRobot(QWidget *parent)
@@ -10,19 +10,28 @@ DrawingRobot::DrawingRobot(QWidget *parent)
 {
 	ui.setupUi(this);
 
+	_serial = new SerialPort();
+	_paths = false;
+
 	ui.graphicsView->scale(0.5, -0.5);	
 	
+	//
 	paint->setText(QString("Paint"));
 	connect(paint, SIGNAL(triggered()), this, SLOT(action_Paint_clicked()));
+	//simulate->setEnabled(false);
 	simulate->setText(QString("Simulate"));
 	connect(simulate, SIGNAL(triggered()), this, SLOT(action_Simulate_clicked()));
+	//run->setEnabled(false);
 	run->setText(QString("Run"));
 	connect(run, SIGNAL(triggered()), this, SLOT(action_Run_clicked()));
 	
+	//paintAll->setEnabled(false);
 	paintAll->setText(QString("PaintALL"));
 	connect(paintAll, SIGNAL(triggered()), this, SLOT(action_PaintALL_clicked()));
+	//simulateAll->setEnabled(false);
 	simulateAll->setText(QString("SimulateALL"));
 	connect(simulateAll, SIGNAL(triggered()), this, SLOT(action_SimulateALL_clicked()));
+	//runAll->setEnabled(false);
 	runAll->setText(QString("RunALL"));
 	connect(runAll, SIGNAL(triggered()), this, SLOT(action_RunALL_clicked()));
 	
@@ -64,21 +73,20 @@ void DrawingRobot::onCustomContextMenu(const QPoint &point) {
 	menu->addAction(simulate);
 	menu->addAction(simulateAll);
 	menu->addAction(run);	
-	menu->addAction(runAll);
-	
+	menu->addAction(runAll);	
 
 
 	if (index.row() == -1 && index.column() == -1) {
 		paint->setEnabled(false);
 		simulate->setEnabled(false);
 		run->setEnabled(false);
-		paintAll->setEnabled(true);
-		simulateAll->setEnabled(true);
-		runAll->setEnabled(true);
+		(_paths)?paintAll->setEnabled(true):paintAll->setEnabled(false);
+		(_paths)?simulateAll->setEnabled(true):simulateAll->setEnabled(false);
+		(_serial->_connect)?runAll->setEnabled(true): runAll->setEnabled(false);
 	}else {
-		paint->setEnabled(true);
-		simulate->setEnabled(true);
-		run->setEnabled(true);
+		(_paths)?paint->setEnabled(true):paint->setEnabled(false);
+		(_paths)?simulate->setEnabled(true): simulate->setEnabled(false);
+		(_serial->_connect)?run->setEnabled(true): run->setEnabled(false);
 		paintAll->setEnabled(false);
 		simulateAll->setEnabled(false);
 		runAll->setEnabled(false);
@@ -89,16 +97,18 @@ void DrawingRobot::onCustomContextMenu(const QPoint &point) {
 	menu->exec(QCursor::pos());
 }
 
-void DrawingRobot::onDynamixelReady(bool connected, SerialPort &serial)
+void DrawingRobot::onDynamixelReady(bool connected, SerialPort &serial,int handPosition)
 {
-	//_serial = new SerialPort();
+	std::cout << "onDynamixelReady" << std::endl;
 	if (connected) {
 		_serial = &serial;
+		_handPosition = handPosition;
 		//int moving = dynamixel.dxl_read_byte(_serial, 1, Dynamixel::AXM_MOVING);
 		//dynamixel.readControlTable(_serial, 1);		
 	}
 	
 }
+
 
 void DrawingRobot::showBeizer(int index, int row)
 {
@@ -169,6 +179,7 @@ void DrawingRobot::action_Simulate_clicked()
 		for (auto __it = _it._Ptr->_Myval.angles.begin(); __it != _it._Ptr->_Myval.angles.end(); __it++) {
 			for (auto ___it = __it._Ptr->_Myval.coordinate.begin(); ___it != __it._Ptr->_Myval.coordinate.end(); ___it++) {
 				ui.openGLWidget->setViewAngles(___it._Ptr->_Myval.x, ___it._Ptr->_Myval.y);
+				Sleep(8);
 			}
 		}
 
@@ -185,7 +196,7 @@ void DrawingRobot::action_Simulate_clicked()
 				for (auto ___it = __it._Ptr->_Myval.coordinate.begin(); ___it != __it._Ptr->_Myval.coordinate.end(); ___it++) {
 					//DrawingRobot::addSceneEllipse(___it._Ptr->_Myval.x, ___it._Ptr->_Myval.y);
 					ui.openGLWidget->setViewAngles(___it._Ptr->_Myval.x, ___it._Ptr->_Myval.y);
-					Sleep(5);
+					Sleep(8);
 				}
 			}
 		}
@@ -246,10 +257,64 @@ void DrawingRobot::action_PaintALL_clicked()
 
 void DrawingRobot::action_SimulateALL_clicked()
 {
+	for (auto _it = svg::_paths.paths.begin(); _it != svg::_paths.paths.end(); _it++) {
+		for (auto __it = _it._Ptr->_Myval._beizer.begin(); __it != _it._Ptr->_Myval._beizer.end(); __it++) {
+			for (auto ___it = __it._Ptr->_Myval.angles.begin(); ___it != __it._Ptr->_Myval.angles.end(); ___it++) {
+				for (auto ____it = ___it._Ptr->_Myval.coordinate.begin(); ____it != ___it._Ptr->_Myval.coordinate.end(); ____it++) {
+					ui.openGLWidget->setViewAngles(____it._Ptr->_Myval.x, ____it._Ptr->_Myval.y);
+					Sleep(8);
+				}
+			}
+		}
+	}
 }
 
 void DrawingRobot::action_RunALL_clicked()
 {
+	
+
+	for (auto _it = svg::_paths.paths.begin(); _it != svg::_paths.paths.end(); _it++) {
+		//MOVE_ABS
+		bool move = true;
+		dynamixel.penUP(_serial, _handPosition);
+		for (auto __it = _it._Ptr->_Myval._beizer.begin(); __it != _it._Ptr->_Myval._beizer.end(); __it++) {
+			while (dynamixel.isMoving(_serial, 1) || dynamixel.isMoving(_serial, 2)) {}
+			for (auto ___it = __it._Ptr->_Myval.degrees.begin(); ___it != __it._Ptr->_Myval.degrees.end(); ___it++) {
+				for (auto ____it = ___it._Ptr->_Myval.coordinate.begin(); ____it != ___it._Ptr->_Myval.coordinate.end(); ____it++) {
+					//MOVE_ABS
+					if (move) {
+						move = setMovAbs(____it._Ptr->_Myval.x, ____it._Ptr->_Myval.y, ____it._Ptr->_Myval.difference);
+					}else {
+						//dynamixel.moveDrawingArm(_serial, ____it._Ptr->_Myval.x, ____it._Ptr->_Myval.y, ____it._Ptr->_Myval.difference);
+						dynamixel.moveDrawingArm(_serial, ____it._Ptr->_Myval.interpolateX, ____it._Ptr->_Myval.interpolateY, ____it._Ptr->_Myval.difference);
+						Sleep(33);					
+					}
+				}
+			}
+		}
+	}
+	while (dynamixel.isMoving(_serial, 1) || dynamixel.isMoving(_serial, 2)) {}
+	dynamixel.penUP(_serial, _handPosition);
+}
+
+bool DrawingRobot::setMovAbs(int hombro, int codo, bool difference) {
+	dynamixel.dxl_write_word(_serial, 1, Dynamixel::AXM_MOVING_SPEED_L, 150);
+	dynamixel.dxl_write_word(_serial, 2, Dynamixel::AXM_MOVING_SPEED_L, 150);
+	dynamixel.dxl_write_byte(_serial, 1, Dynamixel::AXM_CW_COMPLIANCE_SLOPE, 32);
+	dynamixel.dxl_write_byte(_serial, 1, Dynamixel::AXM_CCW_COMPLIANCE_SLOPE, 32);
+	dynamixel.dxl_write_byte(_serial, 2, Dynamixel::AXM_CW_COMPLIANCE_SLOPE, 32);
+	dynamixel.dxl_write_byte(_serial, 2, Dynamixel::AXM_CCW_COMPLIANCE_SLOPE, 32);
+	Sleep(200);
+	dynamixel.moveDrawingArm(_serial, hombro, codo, difference);
+	while (dynamixel.isMoving(_serial, 1) || dynamixel.isMoving(_serial, 2)) {};	
+	dynamixel.penDown(_serial, _handPosition);
+	dynamixel.dxl_write_word(_serial, 1, Dynamixel::AXM_MOVING_SPEED_L, 0);
+	dynamixel.dxl_write_word(_serial, 2, Dynamixel::AXM_MOVING_SPEED_L, 0);
+	dynamixel.dxl_write_byte(_serial, 1, Dynamixel::AXM_CW_COMPLIANCE_SLOPE, 64);
+	dynamixel.dxl_write_byte(_serial, 1, Dynamixel::AXM_CCW_COMPLIANCE_SLOPE, 64);
+	dynamixel.dxl_write_byte(_serial, 2, Dynamixel::AXM_CW_COMPLIANCE_SLOPE, 64);
+	dynamixel.dxl_write_byte(_serial, 2, Dynamixel::AXM_CCW_COMPLIANCE_SLOPE, 64);
+	return false;
 }
 
 void DrawingRobot::setScene()
@@ -275,10 +340,68 @@ void DrawingRobot::action_Run_clicked()
 	QModelIndex index = ui.treeView->currentIndex();
 	if (index.parent().isValid()) {
 		TRACE(<< "path : index " << index.parent().row() << " child:row " << index.row() << " child:column " << index.column() << std::endl);
+		runDegrees(index.parent().row(), index.row());
 	}
 	else {
 		TRACE(<< "path : index " << index.row() << std::endl);
+		runDegrees(index.row());
 	}
+}
+
+void DrawingRobot::runDegrees(int index, int row) {
+	
+	auto it = svg::_paths.paths.begin();
+	std::advance(it, index);
+	auto _it = (it._Ptr->_Myval._beizer.begin());
+	std::advance(_it, row);
+
+	//MOVE_ABS
+	dynamixel.penUP(_serial, _handPosition);
+	bool move = true;
+	
+	for (auto __it = _it._Ptr->_Myval.degrees.begin(); __it != _it._Ptr->_Myval.degrees.end(); __it++) {
+		for (auto ___it = __it._Ptr->_Myval.coordinate.begin(); ___it != __it._Ptr->_Myval.coordinate.end(); ___it++) {
+			//MOVE_ABS
+			if (move){
+				move = setMovAbs(___it._Ptr->_Myval.x, ___it._Ptr->_Myval.y, ___it._Ptr->_Myval.difference);
+			}else {
+				dynamixel.moveDrawingArm(_serial, ___it._Ptr->_Myval.x, ___it._Ptr->_Myval.y, ___it._Ptr->_Myval.difference);
+			}
+			//while (dynamixel.isMoving(_serial, 1) || dynamixel.isMoving(_serial, 2)) {}
+		}
+	}
+	while (dynamixel.isMoving(_serial, 1) || dynamixel.isMoving(_serial, 2)) {}
+	dynamixel.penUP(_serial, _handPosition);
+}
+void DrawingRobot::runDegrees(int index) {
+	
+	DrawingRobot::setScene();
+	
+	auto it = svg::_paths.paths.begin();
+	std::advance(it, index);
+	
+	//MOVE_ABS
+	bool move = true;
+	dynamixel.penUP(_serial, _handPosition);
+
+	for (auto _it = it._Ptr->_Myval._beizer.begin(); _it != it._Ptr->_Myval._beizer.end(); _it++) {
+		while (dynamixel.isMoving(_serial, 1) || dynamixel.isMoving(_serial, 2)) {}
+		for (auto __it = _it._Ptr->_Myval.degrees.begin(); __it != _it._Ptr->_Myval.degrees.end(); __it++) {
+			for (auto ___it = __it._Ptr->_Myval.coordinate.begin(); ___it != __it._Ptr->_Myval.coordinate.end(); ___it++) {
+				//MOVE_ABS
+				if (move) {
+					move = setMovAbs(___it._Ptr->_Myval.x, ___it._Ptr->_Myval.y, ___it._Ptr->_Myval.difference);					
+				}
+				else {
+					//dynamixel.moveDrawingArm(_serial, ___it._Ptr->_Myval.x, ___it._Ptr->_Myval.y, ___it._Ptr->_Myval.difference);
+					dynamixel.moveDrawingArm(_serial, ___it._Ptr->_Myval.interpolateX, ___it._Ptr->_Myval.interpolateY, ___it._Ptr->_Myval.difference);
+					Sleep(33);
+				}
+			}
+		}
+	}
+	while (dynamixel.isMoving(_serial, 1) || dynamixel.isMoving(_serial, 2)) {}
+	dynamixel.penUP(_serial, _handPosition);
 }
 
 void DrawingRobot::on_actionExit_clicked() {
@@ -289,7 +412,7 @@ void DrawingRobot::on_actionExit_clicked() {
 void DrawingRobot::on_dynamixelOpen_clicked() {
 	Qt_Dynamixel qtDynamixel(this);
 	//Qt_Dynamixel *qtDynamixel = new Qt_Dynamixel();
-	connect(&qtDynamixel,SIGNAL(onDynamixelReady_signal(bool,SerialPort & )), this,SLOT(onDynamixelReady(bool, SerialPort &)));
+	connect(&qtDynamixel,SIGNAL(onDynamixelReady_signal(bool,SerialPort &,int )), this,SLOT(onDynamixelReady(bool, SerialPort &,int)));
 	qtDynamixel.exec();
 	
 }
@@ -339,6 +462,8 @@ void DrawingRobot::on_fileOpen_clicked() {
 		}
 		model->setHeaderData(0, Qt::Horizontal, "Paths");
 		ui.treeView->setModel(model);
+
+		_paths = true;
 		//ui.treeView->show();
 	}
 	

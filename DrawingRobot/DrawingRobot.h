@@ -9,6 +9,8 @@
 #include "Dynamixel.h"
 
 static SerialPort *_serial;
+static int _handPosition;
+static bool _paths;
 
 class DrawingRobot : public QMainWindow
 {
@@ -16,7 +18,7 @@ class DrawingRobot : public QMainWindow
 
 public:
 	DrawingRobot(QWidget *parent = Q_NULLPTR);
-	
+	bool setMovAbs(int hombro, int codo, bool difference);
 	
 
 private:
@@ -35,6 +37,9 @@ private:
 	void paintBeizer(int index, int row);
 	void paintBeizer(int index);
 
+	void runDegrees(int index, int row);
+	void runDegrees(int index);
+
 	void setScene();
 	void addSceneEllipse(qreal x, qreal y);
 
@@ -51,5 +56,5 @@ public slots:
 	void action_RunALL_clicked();
 	void on_treeView_clicked();
 	void onCustomContextMenu(const QPoint &);
-	void onDynamixelReady(bool, SerialPort &);
+	void onDynamixelReady(bool, SerialPort &,int);
 };

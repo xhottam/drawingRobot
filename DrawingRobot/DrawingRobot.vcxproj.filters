@@ -98,5 +98,8 @@
     <ClInclude Include="Dynamixel.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="GeneratedFiles\ui_Qt_Dynamixel.h">
+      <Filter>Generated Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
