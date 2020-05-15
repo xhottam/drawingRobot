@@ -1,0 +1,98 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" InitialTargets="libmikroxml_init">
+  <PropertyGroup Label="Default initializers for properties">
+    <Linkage-libmikroxml Condition="'$(Linkage-libmikroxml)' == ''">dynamic</Linkage-libmikroxml>
+    <CallingConvention-libmikroxml Condition="'$(CallingConvention-libmikroxml)' == ''">cdecl</CallingConvention-libmikroxml>
+  </PropertyGroup>
+  <ItemDefinitionGroup Label="Win32 and v140 and Release" Condition="'$(Platform.ToLower())' == 'win32' And '$(PlatformToolset.ToLower())' == 'v140' And ( $(Configuration.ToLower().IndexOf('debug')) == -1 )">
+    <Link>
+      <AdditionalDependencies>$(MSBuildThisFileDirectory)../..//build/native/lib/Win32\v140\Release\libmikroxml.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Label="Win32 and v140 and Debug" Condition="'$(Platform.ToLower())' == 'win32' And '$(PlatformToolset.ToLower())' == 'v140' And ( $(Configuration.ToLower().IndexOf('debug')) &gt; -1 )">
+    <Link>
+      <AdditionalDependencies>$(MSBuildThisFileDirectory)../..//build/native/lib/Win32\v140\Debug\libmikroxml.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Label="x64 and v140 and Release" Condition="'$(Platform.ToLower())' == 'x64' And '$(PlatformToolset.ToLower())' == 'v140' And ( $(Configuration.ToLower().IndexOf('debug')) == -1 )">
+    <Link>
+      <AdditionalDependencies>$(MSBuildThisFileDirectory)../..//build/native/lib/x64\v140\Release\libmikroxml.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Label="x64 and v140 and Debug" Condition="'$(Platform.ToLower())' == 'x64' And '$(PlatformToolset.ToLower())' == 'v140' And ( $(Configuration.ToLower().IndexOf('debug')) &gt; -1 )">
+    <Link>
+      <AdditionalDependencies>$(MSBuildThisFileDirectory)../..//build/native/lib/x64\v140\Debug\libmikroxml.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Label="Win32 and v141 and Release" Condition="'$(Platform.ToLower())' == 'win32' And '$(PlatformToolset.ToLower())' == 'v141' And ( $(Configuration.ToLower().IndexOf('debug')) == -1 )">
+    <Link>
+      <AdditionalDependencies>$(MSBuildThisFileDirectory)../..//build/native/lib/Win32\v141\Release\libmikroxml.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Label="Win32 and v141 and Debug" Condition="'$(Platform.ToLower())' == 'win32' And '$(PlatformToolset.ToLower())' == 'v141' And ( $(Configuration.ToLower().IndexOf('debug')) &gt; -1 )">
+    <Link>
+      <AdditionalDependencies>$(MSBuildThisFileDirectory)../..//build/native/lib/Win32\v141\Debug\libmikroxml.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Label="x64 and v141 and Release" Condition="'$(Platform.ToLower())' == 'x64' And '$(PlatformToolset.ToLower())' == 'v141' And ( $(Configuration.ToLower().IndexOf('debug')) == -1 )">
+    <Link>
+      <AdditionalDependencies>$(MSBuildThisFileDirectory)../..//build/native/lib/x64\v141\Release\libmikroxml.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Label="x64 and v141 and Debug" Condition="'$(Platform.ToLower())' == 'x64' And '$(PlatformToolset.ToLower())' == 'v141' And ( $(Configuration.ToLower().IndexOf('debug')) &gt; -1 )">
+    <Link>
+      <AdditionalDependencies>$(MSBuildThisFileDirectory)../..//build/native/lib/x64\v141\Debug\libmikroxml.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup>
+    <ClCompile>
+      <AdditionalIncludeDirectories>$(MSBuildThisFileDirectory)../..//build/native/include/;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ClCompile>
+    <ResourceCompile>
+      <AdditionalIncludeDirectories>$(MSBuildThisFileDirectory)../..//build/native/include/;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ResourceCompile>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <PropertyPageSchema Include="$(MSBuildThisFileDirectory)\default-propertiesui.xml" />
+  </ItemGroup>
+  <UsingTask TaskName="libmikroxml_Contains" AssemblyFile="$(MSBuildToolsPath)\Microsoft.Build.Tasks.v4.0.dll" TaskFactory="CodeTaskFactory">
+    <ParameterGroup>
+      <Text Output="false" ParameterType="System.String" />
+      <Library Output="false" Required="true" ParameterType="System.String" />
+      <Value Output="false" Required="true" ParameterType="System.String" />
+      <Result Output="true" ParameterType="System.String" />
+    </ParameterGroup>
+    <Task>
+      <Code>Result = ((Text ?? "").Split(';').Contains(Library) ) ? Value : String.Empty;</Code>
+    </Task>
+  </UsingTask>
+  <Target Name="libmikroxml_init">
+    <libmikroxml_Contains Text="Linkage-dynamic" Library="libmikroxml" Value="dynamic" Condition="'$(Linkage-libmikroxml)'==''">
+      <Output TaskParameter="Result" PropertyName="Linkage-libmikroxml" />
+    </libmikroxml_Contains>
+    <libmikroxml_Contains Text="Linkage-static" Library="libmikroxml" Value="static" Condition="'$(Linkage-libmikroxml)'==''">
+      <Output TaskParameter="Result" PropertyName="Linkage-libmikroxml" />
+    </libmikroxml_Contains>
+    <libmikroxml_Contains Text="Linkage-ltcg" Library="libmikroxml" Value="ltcg" Condition="'$(Linkage-libmikroxml)'==''">
+      <Output TaskParameter="Result" PropertyName="Linkage-libmikroxml" />
+    </libmikroxml_Contains>
+    <libmikroxml_Contains Text="Linkage-sxs" Library="libmikroxml" Value="sxs" Condition="'$(Linkage-libmikroxml)'==''">
+      <Output TaskParameter="Result" PropertyName="Linkage-libmikroxml" />
+    </libmikroxml_Contains>
+    <libmikroxml_Contains Text="CallingConvention-cdecl" Library="libmikroxml" Value="cdecl" Condition="'$(CallingConvention-libmikroxml)'==''">
+      <Output TaskParameter="Result" PropertyName="CallingConvention-libmikroxml" />
+    </libmikroxml_Contains>
+    <libmikroxml_Contains Text="CallingConvention-stdcall" Library="libmikroxml" Value="stdcall" Condition="'$(CallingConvention-libmikroxml)'==''">
+      <Output TaskParameter="Result" PropertyName="CallingConvention-libmikroxml" />
+    </libmikroxml_Contains>
+    <libmikroxml_Contains Text="CallingConvention-fastcall" Library="libmikroxml" Value="fastcall" Condition="'$(CallingConvention-libmikroxml)'==''">
+      <Output TaskParameter="Result" PropertyName="CallingConvention-libmikroxml" />
+    </libmikroxml_Contains>
+    <libmikroxml_Contains Text="CallingConvention-thiscall" Library="libmikroxml" Value="thiscall" Condition="'$(CallingConvention-libmikroxml)'==''">
+      <Output TaskParameter="Result" PropertyName="CallingConvention-libmikroxml" />
+    </libmikroxml_Contains>
+    <libmikroxml_Contains Text="CallingConvention-clrcall" Library="libmikroxml" Value="clrcall" Condition="'$(CallingConvention-libmikroxml)'==''">
+      <Output TaskParameter="Result" PropertyName="CallingConvention-libmikroxml" />
+    </libmikroxml_Contains>
+  </Target>
+</Project>

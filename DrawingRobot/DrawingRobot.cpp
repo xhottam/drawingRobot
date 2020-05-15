@@ -47,10 +47,9 @@ DrawingRobot::DrawingRobot(QWidget *parent)
 	connect(ui.dynamixelOpen, SIGNAL(triggered()), this, SLOT(on_dynamixelOpen_clicked()));
 
 	//connect(ui.treeView, SIGNAL(clicked(QModelIndex)), SLOT(on_treeView_clicked()));
-	connect(ui.treeView, SIGNAL(customContextMenuRequested(const QPoint &)), this, SLOT(onCustomContextMenu(const QPoint &)));
-
-	
-
+	connect(ui.treeView, SIGNAL(customContextMenuRequested(const QPoint &)), this, SLOT(onCustomContextMenu(const QPoint &)));	
+	connect(ui.horizontalSlider_OFFSET_X, SIGNAL(valueChanged(int)), this, SLOT(on_fileOpen()));
+	connect(ui.verticalSlider_OFFSET_Y, SIGNAL(valueChanged(int)), this, SLOT(on_fileOpen()));
 }
 
 void DrawingRobot::on_treeView_clicked() {
@@ -332,7 +331,7 @@ void DrawingRobot::setScene()
 
 void DrawingRobot::addSceneEllipse(qreal x, qreal y)
 {
-	scene->addEllipse(x, y, .05, .05, QPen(Qt::black), QBrush(Qt::SolidPattern));
+	scene->addEllipse(x, y, .1, .1, QPen(Qt::black), QBrush(Qt::SolidPattern));
 }
 
 void DrawingRobot::action_Run_clicked()
@@ -421,6 +420,7 @@ void DrawingRobot::on_fileOpen_clicked() {
 
 	
 	QString fileName = QFileDialog::getOpenFileName(this, ("Open File"),"",("Images (*.svg)"));
+	DrawingRobot::file = fileName;
 		
 	if (fileName != "") {
 		
@@ -434,6 +434,7 @@ void DrawingRobot::on_fileOpen_clicked() {
 		ui.listWidget_3->clear();
 		ui.treeView->setModel(nullptr);
 
+		svg::setOffset(ui.horizontalSlider_OFFSET_X->value(),ui.verticalSlider_OFFSET_Y->value());
 		dom->accept(svg::visitor);
 
 		QStandardItemModel* model = new QStandardItemModel();
@@ -467,4 +468,55 @@ void DrawingRobot::on_fileOpen_clicked() {
 		//ui.treeView->show();
 	}
 	
+}
+void DrawingRobot::on_fileOpen() {
+
+	QString fileName = DrawingRobot::file;
+
+	if (fileName != "") {
+
+		auto dom = svgdom::load(papki::FSFile(fileName.toStdString()));
+		ASSERT_ALWAYS(dom);
+		ASSERT_ALWAYS(dom->children.size() != 0);
+		//reseteo todos los paths  que se intente abrir un fichero
+		svg::_paths.paths.clear();
+		ui.listWidget->clear();
+		ui.listWidget_2->clear();
+		ui.listWidget_3->clear();
+		ui.treeView->setModel(nullptr);
+
+		svg::setOffset(ui.horizontalSlider_OFFSET_X->value(), ui.verticalSlider_OFFSET_Y->value());
+		dom->accept(svg::visitor);
+
+		QStandardItemModel* model = new QStandardItemModel();
+
+		for (auto it = svg::_paths.paths.begin(); it != svg::_paths.paths.end(); it++) {
+			QStandardItem* item = new QStandardItem();
+			item->setEditable(false);
+			for (auto _it = it._Ptr->_Myval.type.begin(); _it != it._Ptr->_Myval.type.end(); _it++) {
+				QStandardItem* child = new QStandardItem(_it._Ptr->_Myval.data());
+
+				//index del tipo para recuperrar las coordenas del fichero svg.
+				int index = std::distance(it._Ptr->_Myval.type.begin(), _it);
+				auto __it = it._Ptr->_Myval.coordinates.begin();
+				std::advance(__it, index);
+				std::string tooltip = "x=";
+				for (auto ___it = __it._Ptr->_Myval.coordinate.begin(); ___it != __it._Ptr->_Myval.coordinate.end(); ___it++) {
+					tooltip = tooltip + std::to_string(___it._Ptr->_Myval.x) + " y=" + std::to_string(___it._Ptr->_Myval.y) + " |";
+				}
+
+				child->setToolTip(QString::fromStdString(tooltip));
+				child->setEditable(false);
+				item->appendRow(child);
+			}
+			item->setText(it._Ptr->_Myval.path_id.data());
+			model->appendRow(item);
+		}
+		model->setHeaderData(0, Qt::Horizontal, "Paths");
+		ui.treeView->setModel(model);
+
+		_paths = true;
+		//ui.treeView->show();
+	}
+
 }

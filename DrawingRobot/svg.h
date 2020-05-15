@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 
 #include "svgdom\dom.hpp"
 #include "papki\FSFile.hpp"
@@ -10,13 +10,27 @@
 //Restar Offset de Y dependiendo Width and Height (viewBox). Ver en inkscape cuanto tenemos que restar a Y para que cuadre la coordenada {0,0}.
 //Definir viewBox (en base al workplace del brazo scara) y offset para calcular Y
 
+//El offset de x siempre es fijo para salvar el area de trabajo del brazo
+//El offset de y depende. 
+		// si colocamos el dibujo en linkscape en la esquina superio izquierda el offset de Y es 0. Las coordenadas de la pantalla para Y van al reves.
+//OFFSET_Y (partiendo la coordenada origin (0,0) en linkscape esquina izq.)
+	// OFFSET_Y sin abs entre 110 y 200 cubrimos todo el workplace del brazo y la imagen se pinta igual que en linkspace
+	// OFFSET_Y con abs entre 0 y 200 cubrimos la mitad del workplace del brazo. Mitad donde tenemos colacada la hoja.  imagen se pinta alreves que en linkspace
+//beizerCubic: c_numPoints = resolucion
+//mejoras: llevar estos parametros a la pantalla, mas resolucion al pintar que al dibujar???
+
+
 //Agrupar PATH's por PATHID cuando exista???
 
 //ReachaableWorkSpace(RWS) r1=L1+l2,r2=|l1-l2|, DexterousWorkSpace(DWS)=null,joint limists???
 
-const float OFFSET_Y = 298.868;
-const float OFFSET_X = 88.0;
+//#define OFFSET_ABS
+//float OFFSET_Y = 200.00;
+//const float OFFSET_X = 88.0;
+//float OFFSET_X = 44.0;
 
+float OFFSET_X;
+float OFFSET_Y;
 
 namespace svg {
 
@@ -58,6 +72,11 @@ namespace svg {
 	}_paths;
 
 	coordinate _current_coordinate;
+
+	 void setOffset(float x, float y) {
+		OFFSET_X = x;
+		OFFSET_Y = y;
+	}
 
 
 	//Visitor to remove all Line elements
@@ -102,8 +121,8 @@ namespace svg {
 			prev_feed.y = -1;
 
 			const float c_numPoints = 1000;
-			//for (int i = 0; i < c_numPoints; i +=8)
-			for (int i = 0; i < c_numPoints; i +=50)
+			for (int i = 0; i < c_numPoints; i +=5)
+			//for (int i = 0; i < c_numPoints; i +=50)
 			//for (int i = 0; i < c_numPoints; ++i)
 			{
 				float t = ((float)i) / (float(c_numPoints - 1));
@@ -690,8 +709,11 @@ namespace svg {
 					<< std::endl);*/
 
 				_path.type.push_back("MOVE_ABS");				
-				
+#ifdef OFFSET_ABS
 				_coordinates.coordinate.push_back(_coordinate = { it._Ptr->x + OFFSET_X, abs (OFFSET_Y -it._Ptr->y) });
+#else
+				_coordinates.coordinate.push_back(_coordinate = { it._Ptr->x + OFFSET_X, (OFFSET_Y - it._Ptr->y) });
+#endif
 				_path.coordinates.push_back(_coordinates);
 				
 				
@@ -700,12 +722,13 @@ namespace svg {
 				svg::coordinates _beizer_angles;
 
 				svg::beizer _beizer;
-
+#ifdef OFFSET_ABS
 				//OJO MODIFICAMOS x=y y=x
 				degrees _degree = calculaCinematica2dof(Eigen::Vector2f(it._Ptr->x + OFFSET_X, abs(OFFSET_Y - it._Ptr->y)));
 				//degrees _degree = calculaCinematica2dof(Eigen::Vector2f( abs(OFFSET_Y - it._Ptr->y), it._Ptr->x + OFFSET_X));
-				
-
+#else
+				degrees _degree = calculaCinematica2dof(Eigen::Vector2f(it._Ptr->x + OFFSET_X, (OFFSET_Y - it._Ptr->y)));
+#endif
 				svg::coordinate feed;
 				feed.x = _degree.shoulder_bio_degree;
 				feed.y = _degree.elbow_bio_degree;
@@ -715,8 +738,11 @@ namespace svg {
 				//_beizer_degrees.coordinate.push_back(_coordinate = { (svgdom::real)_degree.shoulder_bio_degree, (svgdom::real)_degree.elbow_bio_degree });
 				_beizer_degrees.coordinate.push_back(feed);
 				_beizer_angles.coordinate.push_back(_coordinate = { (svgdom::real)_degree.shoulder_angle, (svgdom::real)_degree.elbow_angle });
+#ifdef OFFSET_ABS
 				_beizer_coordinates.coordinate.push_back(_coordinate = { it._Ptr->x + OFFSET_X , abs(OFFSET_Y - it._Ptr->y) });
-				
+#else
+				_beizer_coordinates.coordinate.push_back(_coordinate = { it._Ptr->x + OFFSET_X , (OFFSET_Y - it._Ptr->y) });
+#endif
 				_beizer.coordinates.push_back(_beizer_coordinates);
 				_beizer.degrees.push_back(_beizer_degrees);
 				_beizer.angles.push_back(_beizer_angles);
@@ -724,7 +750,12 @@ namespace svg {
 				_path._beizer.push_back(_beizer);
 								
 				_coordinates.coordinate.clear();
+
+#ifdef OFFSET_ABS				
 				_current_coordinate = { it._Ptr->x + OFFSET_X, abs( OFFSET_Y - it._Ptr->y )};
+#else
+				_current_coordinate = { it._Ptr->x + OFFSET_X, (OFFSET_Y - it._Ptr->y) };
+#endif
 						
 				break;
 			}
@@ -808,18 +839,32 @@ namespace svg {
 				_path.type.push_back("CUBIC_ABS");
 				
 				_coordinates.coordinate.push_back(_current_coordinate);
-				_coordinates.coordinate.push_back(_coordinate = { it._Ptr->x + OFFSET_X, abs (OFFSET_Y - it._Ptr->y) });
-				_coordinates.coordinate.push_back(_coordinate = { it._Ptr->x1 + OFFSET_X, abs (OFFSET_Y - it._Ptr->y2) });
-				_coordinates.coordinate.push_back(_coordinate = { it._Ptr->x2 + OFFSET_X, abs (OFFSET_Y - it._Ptr->y2) });
+#ifdef OFFSET_ABS
+				_coordinates.coordinate.push_back(_coordinate = { it._Ptr->x + OFFSET_X,  abs(OFFSET_Y - it._Ptr->y) });
+				_coordinates.coordinate.push_back(_coordinate = { it._Ptr->x1 + OFFSET_X,  abs(OFFSET_Y - it._Ptr->y2) });
+				_coordinates.coordinate.push_back(_coordinate = { it._Ptr->x2 + OFFSET_X,  abs(OFFSET_Y - it._Ptr->y2) });
+#else
+				_coordinates.coordinate.push_back(_coordinate = { it._Ptr->x + OFFSET_X,  (OFFSET_Y - it._Ptr->y) });
+				_coordinates.coordinate.push_back(_coordinate = { it._Ptr->x1 + OFFSET_X, (OFFSET_Y - it._Ptr->y2) });
+				_coordinates.coordinate.push_back(_coordinate = { it._Ptr->x2 + OFFSET_X, (OFFSET_Y - it._Ptr->y2) });
+#endif
 				_path.coordinates.push_back(_coordinates);
 				
 				//calucalmos las coordenadas beizer y los grados de la kinematica.
+#ifdef OFFSET_ABS
 				svg::beizer _beizer = beizerCubic(_current_coordinate, { it._Ptr->x1 + OFFSET_X, abs(OFFSET_Y - it._Ptr->y1) }, { it._Ptr->x2 + OFFSET_X, abs(OFFSET_Y - it._Ptr->y2) }, { it._Ptr->x + OFFSET_X , abs(OFFSET_Y - it._Ptr->y) });
 				//svg::beizer _beizer = bezier2(_current_coordinate, { it._Ptr->x1 + OFFSET_X, abs(OFFSET_Y - it._Ptr->y1) }, { it._Ptr->x2 + OFFSET_X, abs(OFFSET_Y - it._Ptr->y2) }, { it._Ptr->x + OFFSET_X , abs(OFFSET_Y - it._Ptr->y) });
+#else
+				svg::beizer _beizer = beizerCubic(_current_coordinate, { it._Ptr->x1 + OFFSET_X, (OFFSET_Y - it._Ptr->y1) }, { it._Ptr->x2 + OFFSET_X, (OFFSET_Y - it._Ptr->y2) }, { it._Ptr->x + OFFSET_X , (OFFSET_Y - it._Ptr->y) });
+#endif
 				_path._beizer.push_back(_beizer);
 				
 				_coordinates.coordinate.clear();
+#ifdef OFFSET_ABS
 				_current_coordinate = { it._Ptr->x + OFFSET_X, abs(OFFSET_Y - it._Ptr->y) };
+#else
+				_current_coordinate = { it._Ptr->x + OFFSET_X, (OFFSET_Y - it._Ptr->y) };
+#endif
 				
 				break;
 			}

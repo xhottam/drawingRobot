@@ -19,6 +19,7 @@ class DrawingRobot : public QMainWindow
 public:
 	DrawingRobot(QWidget *parent = Q_NULLPTR);
 	bool setMovAbs(int hombro, int codo, bool difference);
+	QString file;
 	
 
 private:
@@ -45,7 +46,8 @@ private:
 
 	
 public slots:
-	void on_fileOpen_clicked();
+	void on_fileOpen_clicked();	
+	void on_fileOpen();
 	void on_actionExit_clicked();
 	void on_dynamixelOpen_clicked();
 	void action_Paint_clicked();

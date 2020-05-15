@@ -1,0 +1,98 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" InitialTargets="libunikod_init">
+  <PropertyGroup Label="Default initializers for properties">
+    <Linkage-libunikod Condition="'$(Linkage-libunikod)' == ''">dynamic</Linkage-libunikod>
+    <CallingConvention-libunikod Condition="'$(CallingConvention-libunikod)' == ''">cdecl</CallingConvention-libunikod>
+  </PropertyGroup>
+  <ItemDefinitionGroup Label="Win32 and v140 and Release" Condition="'$(Platform.ToLower())' == 'win32' And '$(PlatformToolset.ToLower())' == 'v140' And ( $(Configuration.ToLower().IndexOf('debug')) == -1 )">
+    <Link>
+      <AdditionalDependencies>$(MSBuildThisFileDirectory)../..//build/native/lib/Win32\v140\Release\libunikod.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Label="Win32 and v140 and Debug" Condition="'$(Platform.ToLower())' == 'win32' And '$(PlatformToolset.ToLower())' == 'v140' And ( $(Configuration.ToLower().IndexOf('debug')) &gt; -1 )">
+    <Link>
+      <AdditionalDependencies>$(MSBuildThisFileDirectory)../..//build/native/lib/Win32\v140\Debug\libunikod.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Label="x64 and v140 and Release" Condition="'$(Platform.ToLower())' == 'x64' And '$(PlatformToolset.ToLower())' == 'v140' And ( $(Configuration.ToLower().IndexOf('debug')) == -1 )">
+    <Link>
+      <AdditionalDependencies>$(MSBuildThisFileDirectory)../..//build/native/lib/x64\v140\Release\libunikod.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Label="x64 and v140 and Debug" Condition="'$(Platform.ToLower())' == 'x64' And '$(PlatformToolset.ToLower())' == 'v140' And ( $(Configuration.ToLower().IndexOf('debug')) &gt; -1 )">
+    <Link>
+      <AdditionalDependencies>$(MSBuildThisFileDirectory)../..//build/native/lib/x64\v140\Debug\libunikod.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Label="Win32 and v141 and Release" Condition="'$(Platform.ToLower())' == 'win32' And '$(PlatformToolset.ToLower())' == 'v141' And ( $(Configuration.ToLower().IndexOf('debug')) == -1 )">
+    <Link>
+      <AdditionalDependencies>$(MSBuildThisFileDirectory)../..//build/native/lib/Win32\v141\Release\libunikod.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Label="Win32 and v141 and Debug" Condition="'$(Platform.ToLower())' == 'win32' And '$(PlatformToolset.ToLower())' == 'v141' And ( $(Configuration.ToLower().IndexOf('debug')) &gt; -1 )">
+    <Link>
+      <AdditionalDependencies>$(MSBuildThisFileDirectory)../..//build/native/lib/Win32\v141\Debug\libunikod.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Label="x64 and v141 and Release" Condition="'$(Platform.ToLower())' == 'x64' And '$(PlatformToolset.ToLower())' == 'v141' And ( $(Configuration.ToLower().IndexOf('debug')) == -1 )">
+    <Link>
+      <AdditionalDependencies>$(MSBuildThisFileDirectory)../..//build/native/lib/x64\v141\Release\libunikod.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Label="x64 and v141 and Debug" Condition="'$(Platform.ToLower())' == 'x64' And '$(PlatformToolset.ToLower())' == 'v141' And ( $(Configuration.ToLower().IndexOf('debug')) &gt; -1 )">
+    <Link>
+      <AdditionalDependencies>$(MSBuildThisFileDirectory)../..//build/native/lib/x64\v141\Debug\libunikod.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup>
+    <ClCompile>
+      <AdditionalIncludeDirectories>$(MSBuildThisFileDirectory)../..//build/native/include/;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ClCompile>
+    <ResourceCompile>
+      <AdditionalIncludeDirectories>$(MSBuildThisFileDirectory)../..//build/native/include/;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ResourceCompile>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <PropertyPageSchema Include="$(MSBuildThisFileDirectory)\default-propertiesui.xml" />
+  </ItemGroup>
+  <UsingTask TaskName="libunikod_Contains" AssemblyFile="$(MSBuildToolsPath)\Microsoft.Build.Tasks.v4.0.dll" TaskFactory="CodeTaskFactory">
+    <ParameterGroup>
+      <Text Output="false" ParameterType="System.String" />
+      <Library Output="false" Required="true" ParameterType="System.String" />
+      <Value Output="false" Required="true" ParameterType="System.String" />
+      <Result Output="true" ParameterType="System.String" />
+    </ParameterGroup>
+    <Task>
+      <Code>Result = ((Text ?? "").Split(';').Contains(Library) ) ? Value : String.Empty;</Code>
+    </Task>
+  </UsingTask>
+  <Target Name="libunikod_init">
+    <libunikod_Contains Text="Linkage-dynamic" Library="libunikod" Value="dynamic" Condition="'$(Linkage-libunikod)'==''">
+      <Output TaskParameter="Result" PropertyName="Linkage-libunikod" />
+    </libunikod_Contains>
+    <libunikod_Contains Text="Linkage-static" Library="libunikod" Value="static" Condition="'$(Linkage-libunikod)'==''">
+      <Output TaskParameter="Result" PropertyName="Linkage-libunikod" />
+    </libunikod_Contains>
+    <libunikod_Contains Text="Linkage-ltcg" Library="libunikod" Value="ltcg" Condition="'$(Linkage-libunikod)'==''">
+      <Output TaskParameter="Result" PropertyName="Linkage-libunikod" />
+    </libunikod_Contains>
+    <libunikod_Contains Text="Linkage-sxs" Library="libunikod" Value="sxs" Condition="'$(Linkage-libunikod)'==''">
+      <Output TaskParameter="Result" PropertyName="Linkage-libunikod" />
+    </libunikod_Contains>
+    <libunikod_Contains Text="CallingConvention-cdecl" Library="libunikod" Value="cdecl" Condition="'$(CallingConvention-libunikod)'==''">
+      <Output TaskParameter="Result" PropertyName="CallingConvention-libunikod" />
+    </libunikod_Contains>
+    <libunikod_Contains Text="CallingConvention-stdcall" Library="libunikod" Value="stdcall" Condition="'$(CallingConvention-libunikod)'==''">
+      <Output TaskParameter="Result" PropertyName="CallingConvention-libunikod" />
+    </libunikod_Contains>
+    <libunikod_Contains Text="CallingConvention-fastcall" Library="libunikod" Value="fastcall" Condition="'$(CallingConvention-libunikod)'==''">
+      <Output TaskParameter="Result" PropertyName="CallingConvention-libunikod" />
+    </libunikod_Contains>
+    <libunikod_Contains Text="CallingConvention-thiscall" Library="libunikod" Value="thiscall" Condition="'$(CallingConvention-libunikod)'==''">
+      <Output TaskParameter="Result" PropertyName="CallingConvention-libunikod" />
+    </libunikod_Contains>
+    <libunikod_Contains Text="CallingConvention-clrcall" Library="libunikod" Value="clrcall" Condition="'$(CallingConvention-libunikod)'==''">
+      <Output TaskParameter="Result" PropertyName="CallingConvention-libunikod" />
+    </libunikod_Contains>
+  </Target>
+</Project>
