@@ -285,6 +285,20 @@ void Dynamixel::penDown(SerialPort * serialPort, int position)
 	dynamixel.dxl_write_word(serialPort, id_pencil,AXM_GOAL_POSITION_L, position);
 	while (dynamixel.isMoving(serialPort, id_pencil)) {};
 }
+int Dynamixel::doping(SerialPort * serialPort, int id)
+{
+	int n = ping(id);
+	long l = serialPort->sendArray(buffer, n);
+	Sleep(waitTime);
+	memset(bufferIn, 0, BufferSize);
+	//DEFAULT_RETURN_PACKET_SIZE 6
+	n = serialPort->getArray(bufferIn, DEFAULT_RETURN_PACKET_SIZE);
+	Sleep(waitTime);
+	serialPort->clear();
+	Sleep(waitTime);
+
+	return n;
+}
 /**int Dynamixel::setMoveDrawingArm(int hombro, int codo)
 {
 	int pos = 0;
@@ -466,6 +480,25 @@ int Dynamixel::controlTable(int id) {
 
 	//Read Length
 	buffer[pos++] = 49;
+
+	byte checksum = checkSumatory(buffer, pos);
+	buffer[pos++] = checksum;
+
+	return pos;
+}
+
+int Dynamixel::ping(int id) {
+	int pos = 0;
+
+	buffer[pos++] = 0xff;
+	buffer[pos++] = 0xff;
+	buffer[pos++] = id;
+
+	// length = 4
+	buffer[pos++] = 0x02;
+
+	
+	buffer[pos++] = INST_PING;	
 
 	byte checksum = checkSumatory(buffer, pos);
 	buffer[pos++] = checksum;

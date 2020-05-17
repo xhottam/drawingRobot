@@ -40,7 +40,7 @@ class Dynamixel {
 		int Dynamixel::getWord(int id, int address);
 		int Dynamixel::setMoveDrawingArm(int hombro, int codo);
 		int Dynamixel::controlTable(int id);
-
+		int Dynamixel::ping(int id);
 
 	public:
 		Dynamixel();
@@ -325,6 +325,7 @@ class Dynamixel {
 		bool isMoving(SerialPort *serialPort, int id);
 		void penUP(SerialPort *serialPort, int position);
 		void penDown(SerialPort *serialPort, int position);
+		int doping(SerialPort *serialPort, int id);
 			
 			
 };

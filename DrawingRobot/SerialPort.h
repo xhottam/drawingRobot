@@ -34,6 +34,7 @@ private:
 	 void clear();
 
 	 bool _connect = false;
+	 bool _servosReady = false;
 };
 
 static SerialPort serial;

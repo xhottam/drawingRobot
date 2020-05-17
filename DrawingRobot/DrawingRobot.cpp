@@ -81,11 +81,11 @@ void DrawingRobot::onCustomContextMenu(const QPoint &point) {
 		run->setEnabled(false);
 		(_paths)?paintAll->setEnabled(true):paintAll->setEnabled(false);
 		(_paths)?simulateAll->setEnabled(true):simulateAll->setEnabled(false);
-		(_serial->_connect)?runAll->setEnabled(true): runAll->setEnabled(false);
+		(_serial->_servosReady)?runAll->setEnabled(true): runAll->setEnabled(false);
 	}else {
 		(_paths)?paint->setEnabled(true):paint->setEnabled(false);
 		(_paths)?simulate->setEnabled(true): simulate->setEnabled(false);
-		(_serial->_connect)?run->setEnabled(true): run->setEnabled(false);
+		(_serial->_servosReady)?run->setEnabled(true): run->setEnabled(false);
 		paintAll->setEnabled(false);
 		simulateAll->setEnabled(false);
 		runAll->setEnabled(false);
@@ -96,14 +96,17 @@ void DrawingRobot::onCustomContextMenu(const QPoint &point) {
 	menu->exec(QCursor::pos());
 }
 
-void DrawingRobot::onDynamixelReady(bool connected, SerialPort &serial,int handPosition)
+void DrawingRobot::onDynamixelReady(bool ready, SerialPort &serial,int handPosition)
 {
 	std::cout << "onDynamixelReady" << std::endl;
-	if (connected) {
+	if (ready) {
 		_serial = &serial;
 		_handPosition = handPosition;
 		//int moving = dynamixel.dxl_read_byte(_serial, 1, Dynamixel::AXM_MOVING);
 		//dynamixel.readControlTable(_serial, 1);		
+	}
+	else {
+		_serial = &serial;		
 	}
 	
 }

@@ -11,14 +11,35 @@
 Qt_Dynamixel::Qt_Dynamixel(QWidget *parent)
 	: QDialog(parent)
 {
-		
+	bool _hombro, _codo, _pencil;
 	ui.setupUi(this);
 	if (availablePorts()) {
-		ui.setHand->setEnabled(true);
-		paintShoulder(dynamixel.readControlTable(&serial, _id_hombro));
-		paintElbow(dynamixel.readControlTable(&serial, _id_codo));
-		paintHand(dynamixel.readControlTable(&serial, _id_pencil));
-		ablePushButtonsAll();
+		if (dynamixel.doping(&serial, _id_hombro) == DEFAULT_RETURN_PACKET_SIZE) {
+			_hombro = true;
+			paintShoulder(dynamixel.readControlTable(&serial, _id_hombro));
+			allowPushButtons_hombro();
+		}
+		if (dynamixel.doping(&serial, _id_codo) == DEFAULT_RETURN_PACKET_SIZE) {
+			_codo = true;
+			paintElbow(dynamixel.readControlTable(&serial, _id_codo));
+			allowPushButtons_codo();
+		}
+		if (dynamixel.doping(&serial, _id_pencil) == DEFAULT_RETURN_PACKET_SIZE) {
+			_pencil = true;
+			paintHand(dynamixel.readControlTable(&serial, _id_pencil));
+			allowPushButtons_pencil();
+		}
+		
+		//if (_hombro && _codo && _pencil) {
+		if (_hombro && _codo && _pencil) {
+			//all servos are ready to go
+			serial._servosReady = true;
+			ui.setHand->setEnabled(true);
+		}else {
+			serial._servosReady = false;
+			emit onDynamixelReady_signal(false, serial, 512);
+		}
+		
 	}else {
 	
 	}
@@ -28,54 +49,7 @@ Qt_Dynamixel::~Qt_Dynamixel()
 {
 }
 
-void Qt_Dynamixel::ablePushButtonsAll() {
-
-	ui.elbow_alarmLed_read->setEnabled(true);
-	ui.elbow_cw_write->setEnabled(true);
-	ui.elbow_maxTorque_write->setEnabled(true);
-	ui.elbow_hLimitVoltage_read->setEnabled(true);
-	ui.elbow_lLimiitVoltage_read->setEnabled(true);
-	ui.elbow_hLimitVoltage_write->setEnabled(true);
-	ui.elbow_returnDelay_write->setEnabled(true);
-	ui.elbow_alarmShutdown_write->setEnabled(true);
-	ui.elbow_statusReturn_read->setEnabled(true);
-	ui.elbow_ccw_write->setEnabled(true);
-	ui.elbow_alarmShutdown_read->setEnabled(true);
-	ui.elbow_maxTorque_read->setEnabled(true);
-	ui.elbow_alarmLed_write->setEnabled(true);
-	ui.elbow_statusReturn_write->setEnabled(true);
-	ui.elbow_hLimitTemp_read->setEnabled(true);
-	ui.elbow_hLimitTemp_write->setEnabled(true);
-	ui.elbow_returnDelay_read->setEnabled(true);
-	ui.elbow_cw_read->setEnabled(true);
-	ui.elbow_ccw_read->setEnabled(true);
-	ui.elbow_lLimitVoltage_write->setEnabled(true);
-	ui.elbow_baudRate_read->setEnabled(true);
-	ui.elbow_baudRate_write->setEnabled(true);
-	ui.elbow_goalPosition_read->setEnabled(true);
-	ui.elbow_lock_write->setEnabled(true);
-	ui.elbow_presentLoad_read->setEnabled(true);
-	ui.elbow_presentPosition_read->setEnabled(true);
-	ui.elbow_lock_read->setEnabled(true);
-	ui.elbow_presentTemp_read->setEnabled(true);
-	ui.elbow_register_read->setEnabled(true);
-	ui.elbow_torqueLimit_read->setEnabled(true);
-	ui.elbow_presentSpeed_read->setEnabled(true);
-	ui.elbow_ccwSlope_read->setEnabled(true);
-	ui.elbow_cwSlope_read->setEnabled(true);
-	ui.elbow_ccwMargin_read->setEnabled(true);
-	ui.elbow_cwMargin_read->setEnabled(true);
-	ui.elbow_punch_read->setEnabled(true);
-	ui.elbow_movingSpeed_read->setEnabled(true);
-	ui.elbow_torqueLimit_write->setEnabled(true);
-	ui.elbow_movingSpeed_write->setEnabled(true);
-	ui.elbow_ccwSlope_write->setEnabled(true);
-	ui.elbow_cwSlope_write->setEnabled(true);
-	ui.elbow_punch_write->setEnabled(true);
-	ui.elbow_ccwMargin_write->setEnabled(true);
-	ui.elbow_cwMargin_write->setEnabled(true);
-	ui.elbow_goalPosition_write->setEnabled(true);
-	ui.elbow_register_write->setEnabled(true);
+void Qt_Dynamixel::allowPushButtons_hombro() {
 	ui.shoulder_ccw_write->setEnabled(true);
 	ui.shoulder_lLimitVoltage_write->setEnabled(true);
 	ui.shoulder_ccw_read->setEnabled(true);
@@ -122,6 +96,56 @@ void Qt_Dynamixel::ablePushButtonsAll() {
 	ui.shoulder_cwMargin_write->setEnabled(true);
 	ui.shoulder_goalPosition_write->setEnabled(true);
 	ui.shoulder_register_write->setEnabled(true);
+}
+void Qt_Dynamixel::allowPushButtons_codo() {
+	ui.elbow_alarmLed_read->setEnabled(true);
+	ui.elbow_cw_write->setEnabled(true);
+	ui.elbow_maxTorque_write->setEnabled(true);
+	ui.elbow_hLimitVoltage_read->setEnabled(true);
+	ui.elbow_lLimiitVoltage_read->setEnabled(true);
+	ui.elbow_hLimitVoltage_write->setEnabled(true);
+	ui.elbow_returnDelay_write->setEnabled(true);
+	ui.elbow_alarmShutdown_write->setEnabled(true);
+	ui.elbow_statusReturn_read->setEnabled(true);
+	ui.elbow_ccw_write->setEnabled(true);
+	ui.elbow_alarmShutdown_read->setEnabled(true);
+	ui.elbow_maxTorque_read->setEnabled(true);
+	ui.elbow_alarmLed_write->setEnabled(true);
+	ui.elbow_statusReturn_write->setEnabled(true);
+	ui.elbow_hLimitTemp_read->setEnabled(true);
+	ui.elbow_hLimitTemp_write->setEnabled(true);
+	ui.elbow_returnDelay_read->setEnabled(true);
+	ui.elbow_cw_read->setEnabled(true);
+	ui.elbow_ccw_read->setEnabled(true);
+	ui.elbow_lLimitVoltage_write->setEnabled(true);
+	ui.elbow_baudRate_read->setEnabled(true);
+	ui.elbow_baudRate_write->setEnabled(true);
+	ui.elbow_goalPosition_read->setEnabled(true);
+	ui.elbow_lock_write->setEnabled(true);
+	ui.elbow_presentLoad_read->setEnabled(true);
+	ui.elbow_presentPosition_read->setEnabled(true);
+	ui.elbow_lock_read->setEnabled(true);
+	ui.elbow_presentTemp_read->setEnabled(true);
+	ui.elbow_register_read->setEnabled(true);
+	ui.elbow_torqueLimit_read->setEnabled(true);
+	ui.elbow_presentSpeed_read->setEnabled(true);
+	ui.elbow_ccwSlope_read->setEnabled(true);
+	ui.elbow_cwSlope_read->setEnabled(true);
+	ui.elbow_ccwMargin_read->setEnabled(true);
+	ui.elbow_cwMargin_read->setEnabled(true);
+	ui.elbow_punch_read->setEnabled(true);
+	ui.elbow_movingSpeed_read->setEnabled(true);
+	ui.elbow_torqueLimit_write->setEnabled(true);
+	ui.elbow_movingSpeed_write->setEnabled(true);
+	ui.elbow_ccwSlope_write->setEnabled(true);
+	ui.elbow_cwSlope_write->setEnabled(true);
+	ui.elbow_punch_write->setEnabled(true);
+	ui.elbow_ccwMargin_write->setEnabled(true);
+	ui.elbow_cwMargin_write->setEnabled(true);
+	ui.elbow_goalPosition_write->setEnabled(true);
+	ui.elbow_register_write->setEnabled(true);
+}
+void Qt_Dynamixel::allowPushButtons_pencil() {
 	ui.hand_goalPosition_write->setEnabled(true);
 	ui.hand_maxTorque_read->setEnabled(true);
 	ui.hand_goalPosition_read->setEnabled(true);
@@ -249,7 +273,7 @@ bool Qt_Dynamixel::availablePorts() {
 			if (dynamixel.sentTossModeCommand(&serial) == true) {
 				std::cout << s.toStdString() << std::endl;
 				_result = true;
-				serial._connect = _result;
+				//serial._connect = _result;
 				break;
 			}
 			else {

@@ -20,8 +20,10 @@ private:
 	Ui::Qt_Dynamixel ui;
 	void Qt_Dynamixel::paintShoulder(Dynamixel::ControlTable);
 	void Qt_Dynamixel::paintElbow(Dynamixel::ControlTable);
-	void Qt_Dynamixel::paintHand(Dynamixel::ControlTable);
-	void Qt_Dynamixel::ablePushButtonsAll();
+	void Qt_Dynamixel::paintHand(Dynamixel::ControlTable);	
+	void Qt_Dynamixel::allowPushButtons_hombro();
+	void Qt_Dynamixel::allowPushButtons_codo();
+	void Qt_Dynamixel::allowPushButtons_pencil();
 
 	int _id_hombro = 1;
 	int _id_codo = 2;
